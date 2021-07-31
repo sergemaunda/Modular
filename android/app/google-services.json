@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "977729411644",
+    "firebase_url": "https://modular-2.firebaseio.com",
+    "project_id": "modular-2",
+    "storage_bucket": "modular-2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:977729411644:android:547f90c7726d4b77598139",
+        "android_client_info": {
+          "package_name": "com.modular.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "977729411644-qihrv45c4av2v6qib77j4t4logg9hq91.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAeNepMlDFcYGZjhC_GfATkcvBadjsbDuU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "977729411644-qihrv45c4av2v6qib77j4t4logg9hq91.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

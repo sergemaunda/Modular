@@ -1,0 +1,165 @@
+@font-face {
+  font-family: "Anton";
+  src: local("Anton"), url("../../assets/fonts/Anton/Anton-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Lobster";
+  src: local("Lobster"), url("../../assets/fonts/Lobster/Lobster-Regular.ttf") format("truetype");
+}
+
+.center {
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.img-assessments {
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60%;
+}
+
+.font-week {
+  font-family: 'Lobster', cursive;
+  font-size: 24px;
+}
+
+.font-day {
+  font-family: 'Lobster', cursive;
+  font-size: 28px;
+}
+
+.font-app-title {
+  font-family: 'Anton', sans-serif;
+  font-size: 24px;
+  font-weight: 200;
+}
+
+.content-padding {
+  --padding-top: 5px;
+  --padding-start: 5px;
+  --padding-end: 5px;
+  --padding-bottom: 10px;
+}
+
+.date-container {
+  display: flex;
+}
+
+.date-chip {
+    margin-top: 0px;
+    border-top-width: 2px;
+    border-left-width: 2px;
+    border-bottom-width: 2px;
+    border-right-width: 2px;
+    bottom: 5px;
+}
+
+.date-box {
+  text-align: center;
+  margin-top: 10px;
+  width: 130px;
+}
+
+.date-badge {
+  margin-bottom: 0px;
+  margin-top: 5px;
+}
+
+.item-select {
+  --inner-padding-end: 0px;
+}
+
+.icon-size {
+  font-size: 24px;
+}
+
+.filter-background {
+  background: #222428;
+}
+
+.filter-title {
+  font-size: 16px;
+}
+
+.filter-btn {
+  margin-left: 0px;
+}
+
+.filter-text {
+  font-size: 16px;
+  text-align: end;
+}
+
+.filter-item {
+  --padding-start: 32px;
+}
+
+.description-title {
+  font-size: 16px;
+}
+
+.description-text {
+  font-size: 13px;
+}
+
+.description-box {
+  margin-left: 5px;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.chips {
+  font-size: 13px;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.chips-months {
+  background: #222428;
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-bottom: 10px;
+}
+
+.chips-weeks {
+  background: #222428;
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-bottom: 10px;
+}
+
+.img-box {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+}
+
+.img {
+  margin: 10px;
+  width: 15%;
+}
+
+.item-to_be_confirmed {
+  border-left: 4px solid #92949c;
+}
+
+.item-this_week {
+  border-left: 4px solid #eb445a;
+}
+
+.item-next_week {
+  border-left: 4px solid #ffc409;
+}
+
+.item-upcoming_week {
+  border-left: 4px solid #2dd36f;
+}
+
+.item-month {
+  border-left: 4px solid;
+}
+

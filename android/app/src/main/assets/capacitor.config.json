@@ -1,0 +1,6 @@
+{
+	"appId": "com.modular.app",
+	"appName": "Modular",
+	"webDir": "www",
+	"bundledWebRuntime": false
+}

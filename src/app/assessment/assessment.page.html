@@ -1,0 +1,380 @@
+<ion-header>
+  <ion-toolbar color="dark">
+        <ion-title class="font-app-title">Modular</ion-title>
+        <ion-chip (click)="showFilters($event)" *ngIf="assessService.iconFltr.isFilter" slot="end" [color]="assessService.iconFltr.color" outline="false">
+          <ion-label><b>{{assessService.iconFltr.name}}</b></ion-label>
+          <ion-icon [name]="assessService.iconFltr.icon" [color]="assessService.iconFltr.color" size="small"></ion-icon>
+        </ion-chip>
+        <ion-buttons slot="end">
+          <ion-button *ngIf="!assessService.iconFltr.isFilter" (click)="showFilters($event)">
+            <ion-icon slot="icon-only" [name]="assessService.iconFltr.icon" [color]="assessService.iconFltr.color"></ion-icon>
+          </ion-button>
+          <!-- <ion-button>
+            <ion-icon slot="icon-only" name="add-outline"></ion-icon>
+          </ion-button> -->
+          <!-- (click)="showOptions($event)" -->
+          <ion-button (click)="showSettings()">
+            <ion-icon slot="icon-only" name="settings-outline"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="content-padding" [scrollEvents]="true" (ionScroll)="scrollDown($event)" color="dark">
+  <div class="img-assessments" *ngIf="(toBeConfirmed.length === 0) && (thisWeek.length === 0)
+  && (nextWeek.length === 0) && (upComingWeeks.length === 0) && (assessService.monthAssessments.length === 0)">
+    <ion-img src="assets/assessments.svg"></ion-img>
+  </div>
+
+  <!-- <ion-item color="dark" lines="none">
+    <h1 class="font-day">Good afternoon</h1>
+  </ion-item> -->
+
+  <ion-item color="dark" lines="none" detail="false" *ngIf="toBeConfirmed.length !== 0">
+    <h3 class="font-week">To be confirmed</h3>
+  </ion-item>
+
+  <div *ngIf="toBeConfirmed.length !== 0">
+    <div *ngFor="let a of toBeConfirmed">
+      <ion-card color="dark">
+          <ion-item-sliding (ionDrag)="showWeekAssessmentDetails(0, a.weekId, 'drag')">
+            <ion-item class="item-to_be_confirmed" (click)="showWeekAssessmentDetails(0, a.weekId, 'click')" color="dark" lines="inset"
+            detail="true" [detailIcon]="a.showDetails.icon">
+              <ion-label class="ion-text-wrap">
+                  <h2><b>{{ a.module }}</b></h2>
+                  <h3><b>{{ a.title }}</b></h3>
+              </ion-label>
+
+              <div class="date-box">
+                <ion-chip class="date-chip" outline="true" color="medium">
+                  <ion-label>
+                    <b>TBC</b>
+                  </ion-label>
+                </ion-chip>
+              </div>
+            </ion-item>
+
+            <ion-item-options side="start">
+              <ion-item-option (click)="editCurrentMonthAssessment(0, a.id, a.assessMonth)" color="success">Edit</ion-item-option>
+            </ion-item-options>
+
+            <ion-item-options side="end">
+                <ion-item-option (click)="this.deleteWeekAssessment(a.id, a.weekId, 0, a.assessMonth)" color="danger">Delete</ion-item-option>
+            </ion-item-options>
+          </ion-item-sliding>
+
+          <ion-item *ngIf="(a.showDetails.status)" color="dark" lines="none">
+            <div class="description-box">
+              <div *ngIf="(a.description === '')">
+                <h2 class="description-title"><b>Description</b></h2>
+                <div class="img-box" >
+                  <ion-img class="img-box img" src="assets/notes.svg"></ion-img>
+                </div>
+              </div>
+              <div *ngIf="(a.description !== '')">
+                <h2 class="description-title"><b>Description</b></h2>
+                <ion-text class="ion-text-wrap description-text">{{ a.description }}</ion-text>
+              </div>
+            </div>
+          </ion-item>
+          <div *ngIf="a.showDetails.status" class="chips-weeks">
+            <ion-chip color="medium" outline="true">
+              <ion-icon color="medium" name="library-outline" size="small"></ion-icon>
+              <ion-label class="chip"  color="medium">
+                <b>{{ a.type.name }}</b>
+              </ion-label>
+            </ion-chip>
+            <ion-chip *ngIf="a.location !== ''" color="medium" outline="true">
+              <ion-icon name="pin-outline" color="medium"></ion-icon>
+              <ion-label class="chip"  color="medium">
+                <b>{{ a.location }}</b>
+              </ion-label>
+            </ion-chip>
+          </div>
+      </ion-card>
+    </div>
+  </div>
+
+  <ion-item color="dark" lines="none" detail="false" *ngIf="thisWeek.length !== 0">
+    <h3 class="font-week">This week</h3>
+  </ion-item>
+
+  <div *ngIf="thisWeek.length !== 0">
+    <div *ngFor="let a of thisWeek">
+      <ion-card color="dark">
+          <ion-item-sliding (ionDrag)="showWeekAssessmentDetails(1, a.weekId, 'drag')">
+            <ion-item class="item-this_week" (click)="showWeekAssessmentDetails(1, a.weekId,'click')" color="dark"  lines="inset"
+            detail="true" [detailIcon]="a.showDetails.icon">
+              <ion-label class="ion-text-wrap">
+                  <h2><ion-badge color="danger">{{ a.date.day + ' ' + a.date.month}}</ion-badge></h2>
+                  <h2><b>{{ a.module }}</b></h2>
+                  <h3><b>{{ a.title }}</b></h3>
+              </ion-label>
+
+              <div class="date-box">
+                <p class="date-badge" *ngIf="a.time.hasTime"><ion-badge color="danger">{{a.time.hour + 'h' + a.time.minute}}</ion-badge></p>
+                <ion-chip class="date-chip" outline="true" color="danger">
+                  <ion-label>
+                    <b>{{ a.date.weekday }}</b>
+                  </ion-label>
+                </ion-chip>
+              </div>
+            </ion-item>
+
+            <ion-item-options side="start">
+              <ion-item-option (click)="editCurrentMonthAssessment(1, a.id, a.assessMonth)" color="success">Edit</ion-item-option>
+            </ion-item-options>
+
+            <ion-item-options side="end">
+                <ion-item-option (click)="this.deleteWeekAssessment(a.id, a.weekId, 1, a.assessMonth)" color="danger">Delete</ion-item-option>
+            </ion-item-options>
+          </ion-item-sliding>
+
+          <ion-item *ngIf="(a.showDetails.status)" color="dark" lines="none">
+            <div class="description-box">
+              <div *ngIf="(a.description === '')">
+                <h2 class="description-title"><b>Description</b></h2>
+
+                <div class="img-box" >
+                  <ion-img class="img-box img" src="assets/notes.svg"></ion-img>
+                </div>
+              </div>
+              <div *ngIf="(a.description !== '')">
+                <h2 class="description-title"><b>Description</b></h2>
+                <ion-text class="ion-text-wrap description-text">{{ a.description }}</ion-text>
+              </div>
+            </div>
+          </ion-item>
+          <div *ngIf="a.showDetails.status" class="chips-weeks">
+            <ion-chip color="danger" outline="true">
+              <ion-icon color="danger" name="library-outline" size="small"></ion-icon>
+              <ion-label class="chip"  color="danger">
+                <b>{{ a.type.name }}</b>
+              </ion-label>
+            </ion-chip>
+            <ion-chip *ngIf="a.location !== ''" color="danger" outline="true">
+              <ion-icon name="pin-outline" color="danger"></ion-icon>
+              <ion-label class="chip"  color="danger">
+                <b>{{ a.location }}</b>
+              </ion-label>
+            </ion-chip>
+          </div>
+      </ion-card>
+    </div>
+  </div>
+
+
+  <ion-item color="dark" lines="none" detail="false" *ngIf="nextWeek.length !== 0">
+    <h3 class="font-week">Next week</h3>
+  </ion-item>
+
+  <div  *ngIf="nextWeek.length !== 0">
+    <div *ngFor="let a of nextWeek">
+      <ion-card color="dark">
+        <ion-item-sliding (ionDrag)="showWeekAssessmentDetails(2, a.weekId, 'drag')">
+          <ion-item class="item-next_week" (click)="showWeekAssessmentDetails(2, a.weekId, 'click')" color="dark" lines="inset"
+          detail="true" [detailIcon]="a.showDetails.icon">
+            <ion-label class="ion-text-wrap">
+                <h2><ion-badge color="warning">{{ a.date.day + ' ' + a.date.month}}</ion-badge></h2>
+                <h2><b>{{ a.module }}</b></h2>
+                <h3><b>{{ a.title }}</b></h3>
+            </ion-label>
+
+            <div class="date-box">
+              <p class="date-badge" *ngIf="a.time.hasTime"><ion-badge color="warning">{{a.time.hour + 'h' + a.time.minute}}</ion-badge></p>
+              <ion-chip class="date-chip" outline="true" color="warning">
+                <ion-label>
+                  <b>{{ a.date.weekday }}</b>
+                </ion-label>
+              </ion-chip>
+            </div>
+          </ion-item>
+
+          <ion-item-options side="start">
+            <ion-item-option (click)="editCurrentMonthAssessment(2, a.id, a.assessMonth)" color="success">Edit</ion-item-option>
+          </ion-item-options>
+
+          <ion-item-options side="end">
+              <ion-item-option (click)="this.deleteWeekAssessment(a.id, a.weekId, 2, a.assessMonth)" color="danger">Delete</ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+
+        <ion-item *ngIf="(a.showDetails.status)" color="dark" lines="none">
+          <div class="description-box">
+            <div *ngIf="(a.description === '')">
+              <h2 class="description-title"><b>Description</b></h2>
+
+              <div class="img-box" >
+                <ion-img class="img-box img" src="assets/notes.svg"></ion-img>
+              </div>
+            </div>
+            <div *ngIf="(a.description !== '')">
+              <h2 class="description-title"><b>Description</b></h2>
+              <ion-text class="ion-text-wrap description-text">{{ a.description }}</ion-text>
+            </div>
+          </div>
+        </ion-item>
+        <div *ngIf="a.showDetails.status" class="chips-weeks">
+          <ion-chip color="warning" outline="true">
+            <ion-icon color="warning" name="library-outline" size="small"></ion-icon>
+            <ion-label class="chip"  color="warning">
+              <b>{{ a.type.name }}</b>
+            </ion-label>
+          </ion-chip>
+          <ion-chip *ngIf="a.location !== ''" color="warning" outline="true">
+            <ion-icon name="pin-outline" color="warning"></ion-icon>
+            <ion-label class="chip"  color="warning">
+              <b>{{ a.location }}</b>
+            </ion-label>
+          </ion-chip>
+        </div>
+    </ion-card>
+    </div>
+  </div>
+
+  <ion-item color="dark" lines="none" detail="false" *ngIf="upComingWeeks.length !== 0">
+    <h3 class="font-week">Upcoming weeks</h3>
+  </ion-item>
+
+  <div *ngIf="upComingWeeks.length !== 0">
+    <div *ngFor="let a of upComingWeeks">
+      <ion-card color="dark" >
+        <ion-item-sliding (ionDrag)="showWeekAssessmentDetails(3, a.weekId, 'drag')">
+          <ion-item class="item-upcoming_week" (click)="showWeekAssessmentDetails(3, a.weekId, 'click')" color="dark" detail="false" lines="inset"
+          detail="true" [detailIcon]="a.showDetails.icon">
+            <ion-label class="ion-text-wrap">
+                <h2><ion-badge color="success">{{ a.date.day + ' ' + a.date.month}}</ion-badge></h2>
+                <h2><b>{{ a.module }}</b></h2>
+                <h3><b>{{ a.title }}</b></h3>
+            </ion-label>
+
+            <div class="date-box">
+              <p class="date-badge" *ngIf="a.time.hasTime"><ion-badge color="success">{{a.time.hour + 'h' + a.time.minute}}</ion-badge></p>
+              <ion-chip class="date-chip" outline="true" color="success">
+                <ion-label>
+                  <b>{{ a.date.weekday }}</b>
+                </ion-label>
+              </ion-chip>
+            </div>
+          </ion-item>
+
+          <ion-item-options side="start">
+            <ion-item-option (click)="editCurrentMonthAssessment(3, a.id, a.assessMonth)" color="success">Edit</ion-item-option>
+          </ion-item-options>
+
+          <ion-item-options side="end">
+              <ion-item-option (click)="this.deleteWeekAssessment(a.id, a.weekId, 3, a.assessMonth)" color="danger">Delete</ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+
+        <ion-item *ngIf="(a.showDetails.status)" color="dark" lines="none">
+          <div class="description-box">
+            <div *ngIf="(a.description === '')">
+              <h2 class="description-title"><b>Description</b></h2>
+
+              <div class="img-box" >
+                <ion-img class="img-box img" src="assets/notes.svg"></ion-img>
+              </div>
+            </div>
+            <div *ngIf="(a.description !== '')">
+              <h2 class="description-title"><b>Description</b></h2>
+              <ion-text class="ion-text-wrap description-text">{{ a.description }}</ion-text>
+            </div>
+          </div>
+        </ion-item>
+        <div *ngIf="a.showDetails.status" class="chips-weeks">
+          <ion-chip color="success" outline="true">
+            <ion-icon color="success" name="library-outline" size="small"></ion-icon>
+            <ion-label class="chip"  color="success">
+              <b>{{ a.type.name }}</b>
+            </ion-label>
+          </ion-chip>
+          <ion-chip *ngIf="a.location !== ''" color="success" outline="true">
+            <ion-icon name="pin-outline" color="success"></ion-icon>
+            <ion-label class="ion-text-wrap"  color="success">
+              <b>{{ a.location }}</b>
+            </ion-label>
+          </ion-chip>
+        </div>
+    </ion-card>
+    </div>
+  </div>
+
+  <div *ngFor="let month of assessService.monthAssessments">
+    <ion-item color="dark" lines="none" detail="false">
+      <h3 class="font-week">{{ month.month }}</h3>
+    </ion-item>
+
+    <div *ngFor="let a of month.assessment">
+      <ion-card color="dark">
+        <ion-item-sliding (ionDrag)="showMonthAssessmentDetails(month.id, a.id,'drag')">
+          <ion-item class="item-month" [ngStyle]="{'border-left-color': a.date.monthHexColor}" (click)="showMonthAssessmentDetails(month.id, a.id,'click')" color="dark" lines="inset"
+            detail="true" [detailIcon]="a.showDetails.icon">
+            <ion-label class="ion-text-wrap">
+                <h2><b>{{ a.module }}</b></h2>
+                <h3><b>{{ a.title }}</b></h3>
+            </ion-label>
+
+            <div class="date-box">
+              <ion-chip class="date-chip" outline="true" [color]="a.date.monthColor">
+                <ion-label [color]="a.date.monthColor">
+                  <b>{{ a.date.day + ' ' + a.date.month}}</b>
+                </ion-label>
+              </ion-chip>
+            </div>
+          </ion-item>
+
+          <ion-item-options side="start">
+            <ion-item-option (click)="editMonthAssessment(month.id, a.id)" color="success">Edit</ion-item-option>
+          </ion-item-options>
+
+          <ion-item-options side="end">
+              <ion-item-option (click)="this.deleteMonthAssessment(a.id, a.date.month)" color="danger">Delete</ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+
+        <ion-item *ngIf="(a.showDetails.status)" color="dark" lines="none">
+          <div class="description-box">
+            <div *ngIf="(a.description === '')">
+              <h2 class="description-title"><b>Description</b></h2>
+
+              <div class="img-box" >
+                <ion-img class="img-box img" src="assets/notes.svg"></ion-img>
+              </div>
+            </div>
+            <div *ngIf="(a.description !== '')">
+              <h2 class="description-title"><b>Description</b></h2>
+              <ion-text class="ion-text-wrap description-text">{{ a.description }}</ion-text>
+            </div>
+          </div>
+        </ion-item>
+        <div *ngIf="a.showDetails.status" class="chips-months">
+          <ion-chip [color]="a.date.monthColor" outline="true">
+            <ion-icon [color]="a.date.monthColor" name="library-outline" size="small"></ion-icon>
+            <ion-label class="chip"  [color]="a.date.monthColor">
+              <b>{{ a.type.name }}</b>
+            </ion-label>
+          </ion-chip>
+          <ion-chip *ngIf="a.location !== ''" [color]="a.date.monthColor" outline="true">
+            <ion-icon name="pin-outline" [color]="a.date.monthColor"></ion-icon>
+            <ion-label class="chip"  [color]="a.date.monthColor">
+              <b>{{ a.location }}</b>
+            </ion-label>
+          </ion-chip>
+          <ion-chip *ngIf="a.time.hasTime" [color]="a.date.monthColor" outline="true">
+            <ion-icon [color]="a.date.monthColor" name="alarm-outline" size="small"></ion-icon>
+            <ion-label class="chip"  [color]="a.date.monthColor">
+              <b>{{a.time.hour + 'h' + a.time.minute}}</b>
+            </ion-label>
+          </ion-chip>
+        </div>
+    </ion-card>
+    </div>
+  </div>
+
+  <ion-fab *ngIf="showBtn" vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="addAssessment()" color="warning">
+        <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>
