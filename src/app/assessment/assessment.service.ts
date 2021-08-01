@@ -85,17 +85,22 @@ export class AssessmentService {
 // localnotifs -  60, today, tommorow - 17h00, week, month
 
   setLocalNotifications() {
-    // LocalNotifications.schedule({
-    //   notifications: [
-    //     {
-
-    //     }
-    //   ]
-    // });
+    LocalNotifications.schedule({
+      notifications: [
+        {
+          id: 0,
+          title: 'DSPA301',
+          body: 'Report due this week!',
+          schedule: {at: new Date(Date.now() + 1000 * 5)},
+          iconColor: '#eb445a'
+        }
+      ]
+    });
   }
 
   async assessOnInit() {
     await this.storage.create();
+    this.setLocalNotifications();
     const today = new Date();
     const currentMonth = this.getUTCMonth(today.getMonth());
 

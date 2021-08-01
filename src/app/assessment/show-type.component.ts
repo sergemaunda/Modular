@@ -22,7 +22,7 @@ import { AssessmentService } from './assessment.service';
       </ion-toolbar>
     </ion-header>
 
-    <ion-content color="dark">
+    <ion-content color="dark" class="ion-padding">
     <ion-item (click)="editType(type.id)" button color="dark" detail="false" *ngFor="let type of this.assessService.types">
     <ion-icon slot="start" name="flask-outline"></ion-icon>
     <ion-icon (click)="onDeleteType(type.id)" slot="end" name="trash-outline" color="danger"></ion-icon>

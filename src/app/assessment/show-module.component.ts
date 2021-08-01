@@ -23,7 +23,7 @@ import { AssessmentService } from './assessment.service';
       </ion-toolbar>
     </ion-header>
 
-    <ion-content color="dark">
+    <ion-content color="dark" class="ion-padding">
         <ion-item (click)="editModule(module.id)" button color="dark" detail="false" *ngFor="let module of this.assessService.modules">
           <ion-icon name="library-outline" color="light" slot="start"></ion-icon>
           <ion-icon (click)="onDeleteModule(module.id)" slot="end" name="trash-outline" color="danger"></ion-icon>
