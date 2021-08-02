@@ -4,7 +4,6 @@ import { AddAssessmentComponent } from '../assessment/add-assessment.component';
 import { EditAssessmentComponent } from '../assessment/edit-assessment.component';
 import { OptionsComponent } from '../assessment/options.component';
 import { FilterComponent } from './filter.component';
-import { SettingsPage } from './settings.page';
 
 @Component({
   selector: 'app-assessment',
@@ -76,10 +75,6 @@ export class AssessmentPage implements OnInit {
     this.assessService.editMonthAssessmentId.assessmentId = assessId;
     this.assessService.presentModal(EditAssessmentComponent);
   }
-
-  showSettings() {
-    this.assessService.presentModal(SettingsPage);
-}
 
   showOptions(ev: any) {
     this.optionsComp.presentPopover(OptionsComponent, ev);
