@@ -74,8 +74,8 @@ import { IonTextarea } from '@ionic/angular';
                                 </div>
                                 <ion-item lines="inset" detail="false" color="dark">
                                     <ion-label>Title <ion-text *ngIf="titleRequired" color="danger">*</ion-text></ion-label>
-                                    <ion-input style="text-align: right" size="10" type="text" maxlength=15
-                                    placeholder="Enter title" [required]="titleRequired"  [(ngModel)]="title"></ion-input>
+                                    <ion-input style="text-align: right" type="text" size="10"
+                                    placeholder="Enter title" [required]="titleRequired" [(ngModel)]="title"></ion-input>
                                 </ion-item>
                                 <ion-item lines="inset" detail="false" color="dark">
                                     <ion-label>Location</ion-label>
@@ -225,6 +225,7 @@ export class AddAssessmentComponent implements OnInit {
 
                 await this.assessService.modalCtrl.dismiss().then(() => {
                     this.clearFilter(assessment.module);
+                    assessment.assessMonth = 'currentMonth';
                     this.assessService.currentMonthAssessments.push(assessment);
                     this.assessService.currentMonthAssessments.sort((a: any, b: any) => a.dueDate - b.dueDate);
                     this.assessService.assignCurrentMonthAssessmentsID();

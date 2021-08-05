@@ -9,8 +9,8 @@ import { SettingsPage } from './settings.page';
         <ion-item button (click)="showSettings()" color="dark">
             <ion-label>Settings</ion-label>
         </ion-item>
-        <ion-item disabled button color="dark">
-            <ion-label>About</ion-label>
+        <ion-item color="dark">
+            <ion-label color="medium">About</ion-label>
         </ion-item>
     `
 })

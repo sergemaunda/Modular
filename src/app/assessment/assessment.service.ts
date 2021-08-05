@@ -82,16 +82,31 @@ export class AssessmentService {
               public  modalCtrl: ModalController,
               ) {
   }
-// localnotifs -  60, today, tommorow - 17h00, week, month
+// localnotifs -  60, today - 03h00, tommorow - 09h00, week, month
 
   setLocalNotifications() {
-    // LocalNotifications.schedule({
-    //   notifications: [
-    //     {
-
-    //     }
-    //   ]
-    // });
+    LocalNotifications.schedule({
+      notifications: [
+        {
+          id: 0,
+          title: 'DSPA301',
+          body: 'G4A Report is due tomorrow',
+          schedule: {at: new Date(Date.now() + 1000 * 30)}
+        },
+        {
+          id: 1,
+          title: 'DSPA301',
+          body: 'G4A Report is due today',
+          schedule: {at: new Date(Date.now() + 1000 * 20)}
+        },
+        {
+          id: 2,
+          title: 'DSPA301',
+          body: 'G4A Report is due in an hour',
+          schedule: {at: new Date(Date.now() + 1000 * 10)}
+        },
+      ]
+    });
   }
 
   async assessOnInit() {

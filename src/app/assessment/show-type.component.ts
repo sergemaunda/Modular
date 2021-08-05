@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AddTypeComponent } from '../assessment/add-type.component';
 import { EditTypeComponent } from '../assessment/edit-type.component';
 import { AssessmentService } from './assessment.service';
+import { AlertController } from '@ionic/angular';
 
 @Component({
     template: `
@@ -22,11 +23,11 @@ import { AssessmentService } from './assessment.service';
       </ion-toolbar>
     </ion-header>
 
-    <ion-content color="dark">
-    <ion-item (click)="editType(type.id)" button color="dark" detail="false" *ngFor="let type of this.assessService.types">
+    <ion-content color="dark" class="ion-padding">
+    <ion-item  color="dark" detail="false" *ngFor="let type of this.assessService.types">
     <ion-icon slot="start" name="flask-outline"></ion-icon>
-    <ion-icon (click)="onDeleteType(type.id)" slot="end" name="trash-outline" color="danger"></ion-icon>
-    <ion-label class="ion-text-wrap">
+    <ion-icon (click)="presentDeleteAlert(type.id)" slot="end" name="trash-outline" color="danger"></ion-icon>
+    <ion-label (click)="editType(type.id)" class="ion-text-wrap">
         <h2><b>{{type.name}}</b></h2>
     </ion-label>
     </ion-item>
@@ -42,25 +43,37 @@ import { AssessmentService } from './assessment.service';
 })
 
 export class ShowTypeComponent {
-    constructor(public assessService: AssessmentService) {
+    constructor(public assessService: AssessmentService,
+                private alertCtrl: AlertController) {
     }
 
+    async presentDeleteAlert(id: number) {
+      const alert = await this.alertCtrl.create({
+        header: 'Module',
+        message: 'Are you sure you want to delete this assessment type?',
+        buttons: [{text: 'No', handler: () => {this.alertCtrl.dismiss(); }},
+        {text: 'Yes', handler: () => {this.deleteType(id); }}]
+      });
+      await alert.present();
+    }
+
+
     addType() {
-        console.dir(this.assessService.types);
-        this.assessService.presentModal(AddTypeComponent);
+      console.dir(this.assessService.types);
+      this.assessService.presentModal(AddTypeComponent);
     }
 
     editType(id: number) {
-        this.assessService.editTypeId = id;
-        this.assessService.presentModal(EditTypeComponent);
+      this.assessService.editTypeId = id;
+      this.assessService.presentModal(EditTypeComponent);
     }
 
 
-    onDeleteType(id: any) {
-        this.assessService.types.splice(id, 1);
-        this.assessService.assignTypeID();
-        this.assessService.storeTypes();
-      }
+    deleteType(id: any) {
+      this.assessService.types.splice(id, 1);
+      this.assessService.assignTypeID();
+      this.assessService.storeTypes();
+    }
 
     async returnSettings() {
       await this.assessService.modalCtrl.dismiss().then(() => {});
