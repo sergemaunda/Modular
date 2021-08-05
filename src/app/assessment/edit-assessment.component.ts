@@ -54,7 +54,7 @@ import { noUndefined } from '@angular/compiler/src/util';
                                 </div>
                                 <ion-item lines="inset" detail="false" color="dark">
                                     <ion-label>Title <ion-text *ngIf="titleRequired" color="danger">*</ion-text></ion-label>
-                                    <ion-input style="text-align: right" size="10" type="text" maxlength=15
+                                    <ion-input style="text-align: right" size="10" type="text"
                                     placeholder="Enter title" [required]="titleRequired"  [(ngModel)]="assessment.title"
                                      (ionChange)="assessmentChange()"></ion-input>
                                 </ion-item>
@@ -121,7 +121,6 @@ export class EditAssessmentComponent implements OnInit {
     }
 
     ngOnInit() {
-
         if (!isNaN(this.cmId)) {
             this.assessment = this.assessService.currentMonthAssessments[this.cmId];
             this.assessService.editCurrentMonthAssessmentId = {week: NaN, assessmentId: NaN};
@@ -224,13 +223,13 @@ export class EditAssessmentComponent implements OnInit {
                       this.assessService.deleteMonthAssesssment(this.savedId, this.savedMonth);
                   }
 
-                    assessment.assessMonth = undefined;
+                  assessment.assessMonth = 'currentMonth';
                     this.assessService.currentMonthAssessments.push(assessment);
                     this.assessService.currentMonthAssessments.sort((a: any, b: any) => a.dueDate - b.dueDate);
                     this.assessService.assignCurrentMonthAssessmentsID();
                     this.assessService.storeCurrentMonthAssessments();
                     this.assessService.setWeekAssessments(assessment, 0);
-                });
+                  });
 
             } else {
                 let DUE_DATE: number;

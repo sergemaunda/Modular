@@ -3,6 +3,7 @@ import { AddModuleComponent } from '../assessment/add-module.component';
 import { EditModuleComponent } from '../assessment/edit-module.component';
 import { FilterComponent } from '../assessment/filter.component';
 import { AssessmentService } from './assessment.service';
+import { AlertController } from '@ionic/angular';
 
 @Component({
     template: `
@@ -24,10 +25,10 @@ import { AssessmentService } from './assessment.service';
     </ion-header>
 
     <ion-content color="dark" class="ion-padding">
-        <ion-item (click)="editModule(module.id)" button color="dark" detail="false" *ngFor="let module of this.assessService.modules">
+        <ion-item color="dark" detail="false" *ngFor="let module of this.assessService.modules">
           <ion-icon name="library-outline" color="light" slot="start"></ion-icon>
-          <ion-icon (click)="onDeleteModule(module.id)" slot="end" name="trash-outline" color="danger"></ion-icon>
-          <ion-label class="ion-text-wrap">
+          <ion-icon (click)="presentDeleteAlert(module.id, module.code)" slot="end" name="trash-outline" color="danger"></ion-icon>
+          <ion-label (click)="editModule(module.id)" class="ion-text-wrap">
             <ion-badge color="warning">{{module.lecturer}}</ion-badge>
             <h2><b>{{module.code}}</b></h2>
             <h6><b>{{module.name}}</b></h6>
@@ -40,7 +41,18 @@ import { AssessmentService } from './assessment.service';
 
 export class ShowModuleComponent {
     constructor(public assessService: AssessmentService,
-                private filter: FilterComponent) {
+                private filter: FilterComponent,
+                private alertCtrl: AlertController) {
+    }
+
+    async presentDeleteAlert(id: number, moduleCode: string) {
+      const alert = await this.alertCtrl.create({
+        header: 'Module',
+        message: 'Are you sure you want to delete ' + moduleCode + '?',
+        buttons: [{text: 'No', handler: () => {this.alertCtrl.dismiss(); }},
+        {text: 'Yes', handler: () => {this.deleteModule(id); }}]
+      });
+      await alert.present();
     }
 
     addModule() {
@@ -52,7 +64,7 @@ export class ShowModuleComponent {
       this.assessService.presentModal(EditModuleComponent);
     }
 
-    onDeleteModule(id: any) {
+    deleteModule(id: number) {
       if ( (this.assessService.filters.selectedFilter === this.assessService.modules[id].code)) {
         this.filter.removeFilter(this.assessService.newId);
       }
