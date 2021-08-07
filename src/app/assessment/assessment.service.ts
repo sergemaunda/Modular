@@ -90,19 +90,19 @@ export class AssessmentService {
         {
           id: 0,
           title: 'DSPA301',
-          body: 'G4A Report is due tomorrow',
-          schedule: {at: new Date(Date.now() + 1000 * 30)}
+          body: 'G4A Report is due tomorrow!',
+          schedule: {at: new Date(Date.now() + 1000 * 30)},
         },
         {
           id: 1,
           title: 'DSPA301',
-          body: 'G4A Report is due today',
+          body: 'G4A Report is due today!',
           schedule: {at: new Date(Date.now() + 1000 * 20)}
         },
         {
           id: 2,
           title: 'DSPA301',
-          body: 'G4A Report is due in an hour',
+          body: 'G4A Report is due in an hour!',
           schedule: {at: new Date(Date.now() + 1000 * 10)}
         },
       ]
@@ -111,6 +111,7 @@ export class AssessmentService {
 
   async assessOnInit() {
     await this.storage.create();
+    this.setLocalNotifications();
     const today = new Date();
     const currentMonth = this.getUTCMonth(today.getMonth());
 
