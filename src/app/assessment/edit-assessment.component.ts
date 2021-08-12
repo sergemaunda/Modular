@@ -202,13 +202,8 @@ export class EditAssessmentComponent implements OnInit {
                     rawTime: '',
                     assessMonth: undefined,
                     dueDate: 0,
-                    showDetails: {status: false, icon: 'chevron-down'}
+                    showDetails: {status: true, icon: 'chevron-up'}
                 };
-
-                if (this.savedLocation !== assessment.location ||
-                  this.savedDescription !== assessment.description) {
-                    assessment.showDetails = {status: true, icon: 'chevron-up'};
-                }
 
                 await this.assessService.modalCtrl.dismiss().then(() => {
                     if (!isNaN(this.cmId)) {
@@ -218,10 +213,10 @@ export class EditAssessmentComponent implements OnInit {
                     }
 
                     if (!isNaN(this.nmId)) {
-                      this.assessService.deleteWeekAssessment(1, this.savedId, 'nextMonth', this.nmWId, this.savedWeekId);
-                  } else {
-                      this.assessService.deleteMonthAssesssment(this.savedId, this.savedMonth);
-                  }
+                        this.assessService.deleteWeekAssessment(1, this.savedId, 'nextMonth', this.nmWId, this.savedWeekId);
+                    } else {
+                        this.assessService.deleteMonthAssesssment(this.savedId, this.savedMonth);
+                    }
 
                   assessment.assessMonth = 'currentMonth';
                     this.assessService.currentMonthAssessments.push(assessment);
@@ -280,7 +275,7 @@ export class EditAssessmentComponent implements OnInit {
                         rawTime: this.assessment.rawTime,
                         assessMonth: undefined,
                         dueDate: DUE_DATE,
-                        showDetails: {status: false, icon: 'chevron-down'}
+                        showDetails: {status: true, icon: 'chevron-up'}
                     };
 
                     if (currentMonth === this.savedDate.month) {
@@ -290,11 +285,6 @@ export class EditAssessmentComponent implements OnInit {
                                 this.assessService.deleteMonthAssesssment(this.savedId, this.savedMonth);
                             } else {
                                 this.assessService.deleteWeekAssessment(1, this.savedId, 'currentMonth',this.cmWId, this.savedWeekId);
-                            }
-
-                            if (this.savedLocation !== assessment.location ||
-                              this.savedDescription !== assessment.description) {
-                              assessment.showDetails = {status: true, icon: 'chevron-up'};
                             }
 
                             assessment.assessMonth = 'currentMonth';
@@ -314,11 +304,6 @@ export class EditAssessmentComponent implements OnInit {
                             this.assessService.deleteMonthAssesssment(this.savedId, this.savedMonth);
                         } else {
                             this.assessService.deleteWeekAssessment(1, this.savedId, 'nextMonth',this.nmWId, this.savedWeekId);
-                        }
-
-                        if (this.savedLocation !== assessment.location ||
-                          this.savedDescription !== assessment.description) {
-                          assessment.showDetails = {status: true, icon: 'chevron-up'};
                         }
 
                         assessment.assessMonth = 'nextMonth';
@@ -348,12 +333,6 @@ export class EditAssessmentComponent implements OnInit {
                             const month = this.savedDate.month;
                             const tempMonthID = this.assessService.getMonthID(month, this.assessService.monthAssessments);
                             const permMonthID = this.assessService.getMonthID(month, this.assessService.permMonthAssessments);
-
-                            if (this.savedLocation !== assessment.location ||
-                              this.savedDescription !== assessment.description ||
-                              this.savedRawTime.slice(11,16) !== assessment.rawTime.slice(11,16)) {
-                                assessment.showDetails = {status: true, icon: 'chevron-up'};
-                            }
 
                             assessment.assessMonth = undefined;
                             this.assessService.monthAssessments[tempMonthID].assessment.push(assessment);

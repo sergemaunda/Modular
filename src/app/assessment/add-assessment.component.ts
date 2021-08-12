@@ -216,12 +216,8 @@ export class AddAssessmentComponent implements OnInit {
                     rawTime: '',
                     assessMonth: undefined,
                     dueDate: 0,
-                    showDetails: {status: false, icon: 'chevron-down'}
+                    showDetails: {status: true, icon: 'chevron-up'}
                 };
-
-                if (assessment.description !== '' || assessment.location !== '') {
-                  assessment.showDetails = {status: true, icon: 'chevron-up'};
-                }
 
                 await this.assessService.modalCtrl.dismiss().then(() => {
                     this.clearFilter(assessment.module);
@@ -281,13 +277,10 @@ export class AddAssessmentComponent implements OnInit {
                         rawTime: this.time.timeString,
                         assessMonth: undefined,
                         dueDate: DUE_DATE,
-                        showDetails: {status: false, icon: 'chevron-down'}
+                        showDetails: {status: true, icon: 'chevron-up'}
                     };
 
                     if (currentMonth === assessment.date.month) {
-                      if (assessment.description !== '' || assessment.location !== '') {
-                        assessment.showDetails = {status: true, icon: 'chevron-up'};
-                      }
 
                       await this.assessService.modalCtrl.dismiss().then(() => {
                         this.clearFilter(assessment.module);
@@ -321,12 +314,6 @@ export class AddAssessmentComponent implements OnInit {
                         const month = this.date.month;
                         const tempMonthID = this.assessService.getMonthID(month, this.assessService.monthAssessments);
                         const permMonthID = this.assessService.getMonthID(month, this.assessService.permMonthAssessments);
-
-                        if (assessment.description !== '' ||
-                          assessment.location !== '' ||
-                          assessment.rawTime !== '') {
-                          assessment.showDetails = {status: true, icon: 'chevron-up'};
-                        }
 
                         await this.assessService.modalCtrl.dismiss().then(() => {
                           this.clearFilter(assessment.module);

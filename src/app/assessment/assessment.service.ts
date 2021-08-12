@@ -30,6 +30,10 @@ export class AssessmentService {
   nextMonthAssessments = [];
   monthAssessments = [];
   permMonthAssessments = [];
+  notifications = [];
+  modules = [];
+  types = [];
+  notifs = {func: console.log('Les Gooo!')};
   weekAssessments = [
     {
       id: 0,
@@ -52,10 +56,6 @@ export class AssessmentService {
       assessment: []
     },
   ];
-  modules = [];
-  types = [];
-  tasks = [];
-
   defaultTypes = [
     {
       id: 0,
@@ -84,34 +84,13 @@ export class AssessmentService {
   }
 // localnotifs -  60, today - 03h00, tommorow - 09h00, week, month
 
-  setLocalNotifications() {
-    LocalNotifications.schedule({
-      notifications: [
-        {
-          id: 0,
-          title: 'DSPA301',
-          body: 'G4A Report is due tomorrow!',
-          schedule: {at: new Date(Date.now() + 1000 * 30)},
-        },
-        {
-          id: 1,
-          title: 'DSPA301',
-          body: 'G4A Report is due today!',
-          schedule: {at: new Date(Date.now() + 1000 * 20)}
-        },
-        {
-          id: 2,
-          title: 'DSPA301',
-          body: 'G4A Report is due in an hour!',
-          schedule: {at: new Date(Date.now() + 1000 * 10)}
-        },
-      ]
-    });
+  setLocalNotifications(notifications: any) {
+    LocalNotifications.schedule({notifications});
   }
 
   async assessOnInit() {
     await this.storage.create();
-    this.setLocalNotifications();
+    // this.setLocalNotifications();
     const today = new Date();
     const currentMonth = this.getUTCMonth(today.getMonth());
 
@@ -554,7 +533,7 @@ export class AssessmentService {
     const toast = await this.toastCtrl.create({
       id: '1',
       message: 'Assessment deleted',
-      duration: 2000,
+      duration: 3000,
       color: 'dark',
       position: 'bottom',
       cssClass: 'undo-btn',
@@ -568,7 +547,7 @@ export class AssessmentService {
     const toast = await this.toastCtrl.create({
       id: '2',
       message: 'Assessment deleted',
-      duration: 2000,
+      duration: 3000,
       color: 'dark',
       position: 'bottom',
       cssClass: 'undo-btn',

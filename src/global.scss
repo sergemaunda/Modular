@@ -57,6 +57,13 @@
   transform-origin: bottom !important;
 }
 
+.action-sheet-background .action-sheet-group {
+  --background: #222428;
+}
+
+.options-btn .action-sheet-icon {
+  color: grey;
+}
 
 .alert .alert-wrapper {
   --background: #222428;
