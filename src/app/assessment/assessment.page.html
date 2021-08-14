@@ -26,7 +26,7 @@
   </div>
 
   <!-- <ion-item color="dark" lines="none">
-    <h1 class="font-day">Good afternoon</h1>
+    <h1 class="font-day">Good evening</h1>
   </ion-item> -->
 
   <ion-item color="dark" lines="none" detail="false" *ngIf="toBeConfirmed.length !== 0">
@@ -93,7 +93,10 @@
   </div>
 
   <ion-item color="dark" lines="none" detail="false" *ngIf="thisWeek.length !== 0">
-    <h3 class="font-week">This week</h3>
+    <ion-label>
+      <h6 class="font-week-duration">LAST DAY - 14 AUGUST</h6>
+      <h3 class="font-week">This week</h3>
+    </ion-label>
   </ion-item>
 
   <div *ngIf="thisWeek.length !== 0">

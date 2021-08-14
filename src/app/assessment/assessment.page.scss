@@ -8,6 +8,16 @@
   src: local("Lobster"), url("../../assets/fonts/Lobster/Lobster-Regular.ttf") format("truetype");
 }
 
+@font-face {
+  font-family: 'Fjalla One', sans-serif;
+  src: local("Fjalla One"), url("../../assets/fonts/FjallaOne/FjallaOne-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: 'Poppins', sans-serif;
+  src: local("Poppins"), url("../../assets/fonts/Poppins/Poppins-SemiBold.ttf") format("truetype");
+}
+
 .center {
   position: relative;
   top: 50%;
@@ -24,13 +34,21 @@
 }
 
 .font-week {
-  font-family: 'Lobster', cursive;
+  font-family: "Lobster";
   font-size: 24px;
 }
 
 .font-day {
-  font-family: 'Lobster', cursive;
-  font-size: 28px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.font-week-duration {
+  font-family: 'Fjalla One', sans-serif;
+  font-weight: bold;
+  font-size: 10px;
+  color: grey;
 }
 
 .font-app-title {

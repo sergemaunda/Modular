@@ -33,7 +33,6 @@ export class AssessmentService {
   notifications = [];
   modules = [];
   types = [];
-  notifs = {func: console.log('Les Gooo!')};
   weekAssessments = [
     {
       id: 0,
@@ -84,13 +83,33 @@ export class AssessmentService {
   }
 // localnotifs -  60, today - 03h00, tommorow - 09h00, week, month
 
-  setLocalNotifications(notifications: any) {
-    LocalNotifications.schedule({notifications});
+  setLocalNotifications() {
+    LocalNotifications.schedule({
+      notifications: [
+        {
+          id: 0,
+          title: 'Test Notification',
+          body: 'Les Goo!',
+          schedule: {at: new Date(Date.now() + 1000 * 10)}
+        }
+      ]
+    });
+
+    LocalNotifications.schedule({
+      notifications: [
+        {
+          id: 0,
+          title: 'Test Notification',
+          body: 'Expected overwrite!',
+          schedule: {at: new Date(Date.now() + 1000 * 5)}
+        }
+      ]
+    });
   }
 
   async assessOnInit() {
     await this.storage.create();
-    // this.setLocalNotifications();
+    this.setLocalNotifications();
     const today = new Date();
     const currentMonth = this.getUTCMonth(today.getMonth());
 
