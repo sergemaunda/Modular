@@ -17,9 +17,7 @@ export class AssessmentPage implements OnInit {
   thisWeek = [];
   nextWeek = [];
   upComingWeeks = [];
-  // id: number, weekId: number, week: number, assessmentMonth
   pWA = {weekType: undefined, weekId: undefined, assessId: undefined, monthType: undefined}; //properties of selected week assessment
-  // id: number, month: string
   pMA = {assessId: undefined, monthId: undefined, month: undefined}; //properties of selected month assessment
 
   showBtn: boolean;
@@ -69,9 +67,9 @@ export class AssessmentPage implements OnInit {
       this.assessService.editCurrentMonthAssessmentId.assessmentId = assessId;
     }
 
-    if (monthType === 'nextMonth') {
-      this.assessService.editNextMonthAssessmentId.week = weekType;
-      this.assessService.editNextMonthAssessmentId.assessmentId = assessId;
+    if (monthType === 'TBC') {
+      this.assessService.editTBCAssessmentId.week = weekType;
+      this.assessService.editTBCAssessmentId.assessmentId = assessId;
     }
     this.assessService.presentModal(EditAssessmentComponent);
   }

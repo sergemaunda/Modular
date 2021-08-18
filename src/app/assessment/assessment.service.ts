@@ -16,7 +16,7 @@ export class AssessmentService {
   editModuleId: number;
   editTypeId: number;
   editCurrentMonthAssessmentId = {week: NaN, assessmentId: NaN};
-  editNextMonthAssessmentId = {week: NaN, assessmentId: NaN};
+  editTBCAssessmentId = {week: NaN, assessmentId: NaN};
   editMonthAssessmentId = {monthId: NaN, assessmentId: NaN};
   iconFltr = {name: '', icon: 'funnel-outline', color: 'light', isFilter: false};
 
@@ -27,7 +27,7 @@ export class AssessmentService {
   newId = -1;
   filters = {selectedFilter: '', filter: []};
   currentMonthAssessments = [];
-  nextMonthAssessments = [];
+  tbcAssessments = [];
   monthAssessments = [];
   permMonthAssessments = [];
   notifications = [];
@@ -89,19 +89,38 @@ export class AssessmentService {
         {
           id: 0,
           title: 'Test Notification',
-          body: 'Les Goo!',
+          body: 'Assessment due next week! Start preparing.',
           schedule: {at: new Date(Date.now() + 1000 * 10)}
-        }
-      ]
-    });
-
-    LocalNotifications.schedule({
-      notifications: [
+        },
         {
-          id: 0,
+          id: 1,
           title: 'Test Notification',
-          body: 'Expected overwrite!',
-          schedule: {at: new Date(Date.now() + 1000 * 5)}
+          body: 'Assessment due soon! Open up those books and get to studying.',
+          schedule: {at: new Date(Date.now() + 1000 * 10)}
+        },
+        {
+          id: 2,
+          title: 'Test Notification',
+          body: 'Assessment due in 3 days! Study! Study! Study!',
+          schedule: {at: new Date(Date.now() + 1000 * 10)}
+        },
+        {
+          id: 3,
+          title: 'Test Notification',
+          body: 'Assessment due tomorrow at [time]! Hope you ready.',
+          schedule: {at: new Date(Date.now() + 1000 * 10)}
+        },
+        {
+          id: 4,
+          title: 'Test Notification',
+          body: 'Assessment due today at [time]! Goodluck, you got this.',
+          schedule: {at: new Date(Date.now() + 1000 * 10)}
+        },
+        {
+          id: 5,
+          title: 'Test Notification',
+          body: 'Assessment due in 1 hour at [time]! I believe in you.',
+          schedule: {at: new Date(Date.now() + 1000 * 10)}
         }
       ]
     });
@@ -130,10 +149,10 @@ export class AssessmentService {
       );
     }
 
-    if (keys[keys.indexOf('nextMonth_assessments')] === 'nextMonth_assessments') {
-      await this.storage.get('nextMonth_assessments')
+    if (keys[keys.indexOf('TBC_assessments')] === 'TBC_assessments') {
+      await this.storage.get('TBC_assessments')
       .then(
-        (data) => {this.nextMonthAssessments = data; }
+        (data) => {this.tbcAssessments = data; }
       );
     }
 
@@ -142,7 +161,6 @@ export class AssessmentService {
 
       if (nextMonth.month === currentMonth) {
         nextMonth.assessment.forEach((assessment) => {this.currentMonthAssessments.push(assessment); });
-        this.nextMonthAssessments.forEach((assessment) => {this.currentMonthAssessments.push(assessment); });
         this.deleteMonth(0, this.permMonthAssessments);
       }
     }
@@ -160,6 +178,10 @@ export class AssessmentService {
     let oldAssessmentIDs = 0;
     let initialID = 0;
 
+    this.tbcAssessments.forEach((assessment) => {
+      this.setWeekAssessments(assessment, assessment.dueDate);
+    });
+
     this.currentMonthAssessments.forEach((assessment) => {
       const PERIOD = assessment.dueDate - Date.now();
 
@@ -175,24 +197,6 @@ export class AssessmentService {
       }
     });
     this.deleteWeekAssessment(oldAssessmentIDs, initialID, 'currentMonth');
-
-    oldAssessment = false;
-    oldAssessmentIDs = 0;
-    initialID = 0;
-
-    this.nextMonthAssessments.forEach((assessment) => {
-      if (assessment.date.month !== currentMonth) {
-        assessment.showDetails = {status: false, icon: 'chevron-down'};
-        this.setWeekAssessments(assessment, assessment.dueDate);
-      } else {
-        ++oldAssessmentIDs;
-        if (oldAssessment === false) {
-          initialID = assessment.id;
-          oldAssessment = true;
-        }
-      }
-    });
-    this.deleteWeekAssessment(oldAssessmentIDs, initialID, 'nextMonth');
   }
 
   clearAssessments() {
@@ -216,7 +220,7 @@ export class AssessmentService {
       }
     });
 
-    this.nextMonthAssessments.forEach((assessment) => {
+    this.tbcAssessments.forEach((assessment) => {
       if (assessment.module === this.filters.selectedFilter) {
         if (fltrSelected) {
           this.weekAssessments[assessment.week].assessment.push(assessment);
@@ -279,7 +283,7 @@ export class AssessmentService {
       this.assignWeekAssessmentsID(0);
 
     } else if ((PERIOD > 0) && (PERIOD < (WEEK - TIME_GONE_IN_WEEK))) {
-      if ((SOON > 0) && (SOON < DAY)) {assessment.date.weekday = 'Today'; }
+      if ((SOON > 0) && (SOON < DAY)) {assessment.date.weekday = ' Today '; }
       if ((SOON > DAY) && (SOON < TOMORROW)) {assessment.date.weekday = 'Tomorrow'; }
       assessment.week = 1;
       this.weekAssessments[1].assessment.push(assessment);
@@ -308,11 +312,11 @@ export class AssessmentService {
       this.storeCurrentMonthAssessments();
     }
 
-    if (assessmentMonth === 'nextMonth') {
-      this.nextMonthAssessments.push(assessment);
-      this.nextMonthAssessments.sort((a: any, b: any) => a.dueDate - b.dueDate);
-      this.assignNextMonthAssessmentsID();
-      this.storeNextMonthAssessments();
+    if (assessmentMonth === 'TBC') {
+      this.tbcAssessments.push(assessment);
+      this.tbcAssessments.sort((a: any, b: any) => a.dueDate - b.dueDate);
+      this.assigntbcAssessmentsID();
+      this.storetbcAssessments();
     }
     this.weekAssessments[week].assessment.push(assessment);
     this.weekAssessments[week].assessment.sort((a: any, b: any) => a.dueDate - b.dueDate);
@@ -346,10 +350,10 @@ export class AssessmentService {
       this.storeCurrentMonthAssessments();
     }
 
-    if (assessmentMonth === 'nextMonth') {
-      this.nextMonthAssessments.splice(id, oldAssessmentIDs);
-      this.assignNextMonthAssessmentsID();
-      this.storeNextMonthAssessments();
+    if (assessmentMonth === 'TBC') {
+      this.tbcAssessments.splice(id, oldAssessmentIDs);
+      this.assigntbcAssessmentsID();
+      this.storetbcAssessments();
     }
   }
 
@@ -425,11 +429,11 @@ export class AssessmentService {
     );
   }
 
-  async storeNextMonthAssessments() {
-    await this.storage.get('nextMonth_assessments')
+  async storetbcAssessments() {
+    await this.storage.get('TBC_assessments')
     .then(
-      ()  => {this.storage.remove('nextMonth_assessments');
-              this.storage.set('nextMonth_assessments', this.nextMonthAssessments); }
+      ()  => {this.storage.remove('TBC_assessments');
+              this.storage.set('TBC_assessments', this.tbcAssessments); }
     );
   }
 
@@ -459,9 +463,9 @@ export class AssessmentService {
     });
   }
 
-  assignNextMonthAssessmentsID() {
+  assigntbcAssessmentsID() {
     let id = -1;
-    this.nextMonthAssessments.forEach(element => {
+    this.tbcAssessments.forEach(element => {
        ++id;
        element.id = id;
     });
@@ -632,7 +636,7 @@ export class AssessmentService {
     return date.slice(5, 7);
   }
 
-  getMonth(date: string): {name: string; color: string; hexColor: string} {
+  getMonth(date: string): {name: string; color: string; hexColor: string } {
     const month = this.getMonthNo(date);
 
     switch (month) {
@@ -660,6 +664,35 @@ export class AssessmentService {
           return {name: 'November', color: 'primary', hexColor: '#3880ff'};
         case '12':
           return {name: 'December', color: 'tertiary', hexColor: '#5260ff'};
+    }
+  }
+
+  getMonthSvg(month: string): string {
+    switch (month) {
+        case 'January':
+          return 'assets/months/January.svg';
+        case 'February':
+          return 'assets/months/February.svg';
+        case 'March':
+          return 'assets/months/March.svg';
+        case 'April':
+          return 'assets/months/April.svg';
+        case 'May':
+          return  'assets/months/May.svg';
+        case 'June':
+          return 'assets/months/June.svg';
+        case 'July':
+          return 'assets/months/July.svg';
+        case 'August':
+          return 'assets/months/August.svg';
+        case 'September':
+          return 'assets/months/September.svg';
+        case 'October':
+          return 'assets/months/October.svg';
+        case 'November':
+          return 'assets/months/November.svg';
+        case 'December':
+          return 'assets/months/December.svg';
     }
   }
 
@@ -702,6 +735,7 @@ export class AssessmentService {
       permId: undefined,
       sortID: this.getMonthSortID(name),
       month: name,
+      monthSvg: this.getMonthSvg(name),
       assessment: []
     });
     assessments.sort((a: any, b: any) => a.sortID - b.sortID);

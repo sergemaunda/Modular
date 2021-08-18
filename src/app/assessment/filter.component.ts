@@ -67,7 +67,7 @@ export class FilterComponent {
         this.assessService.assignWeekAssessmentsID(assessment.week);
       });
 
-      this.assessService.nextMonthAssessments.forEach((assessment) => {
+      this.assessService.tbcAssessments.forEach((assessment) => {
         this.assessService.weekAssessments[assessment.week].assessment.push(assessment);
         this.assessService.weekAssessments[assessment.week].assessment.sort((a: any, b: any) => a.dueDate - b.dueDate);
         this.assessService.assignWeekAssessmentsID(assessment.week);

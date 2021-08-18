@@ -94,9 +94,9 @@ export class EditAssessmentComponent implements OnInit {
 
     @ViewChild('textAreaId', { static: false }) contentElement: IonTextarea;
     cmId = this.assessService.editCurrentMonthAssessmentId.assessmentId;
-    nmId = this.assessService.editNextMonthAssessmentId.assessmentId;
+    tbcId = this.assessService.editTBCAssessmentId.assessmentId;
     cmWId = this.assessService.editCurrentMonthAssessmentId.week;
-    nmWId = this.assessService.editNextMonthAssessmentId.week;
+    tbcWId = this.assessService.editTBCAssessmentId.week;
     mId = this.assessService.editMonthAssessmentId.monthId;
     aId = this.assessService.editMonthAssessmentId.assessmentId;
 
@@ -126,9 +126,9 @@ export class EditAssessmentComponent implements OnInit {
             this.assessService.editCurrentMonthAssessmentId = {week: NaN, assessmentId: NaN};
         }
 
-        if (!isNaN(this.nmId)) {
-          this.assessment = this.assessService.nextMonthAssessments[this.nmId];
-          this.assessService.editNextMonthAssessmentId = {week: NaN, assessmentId: NaN};
+        if (!isNaN(this.tbcId)) {
+          this.assessment = this.assessService.tbcAssessments[this.tbcId];
+          this.assessService.editTBCAssessmentId = {week: NaN, assessmentId: NaN};
         }
 
         if (!isNaN(this.mId) && !isNaN(this.aId)) {
@@ -208,23 +208,43 @@ export class EditAssessmentComponent implements OnInit {
                 await this.assessService.modalCtrl.dismiss().then(() => {
                     if (!isNaN(this.cmId)) {
                         this.assessService.deleteWeekAssessment(1, this.savedId, 'currentMonth', this.cmWId, this.savedWeekId);
-                    } else {
+                    } else if (!isNaN(this.mId) && !isNaN(this.aId)) {
                         this.assessService.deleteMonthAssesssment(this.savedId, this.savedMonth);
+                    } else {
+                        this.assessService.deleteWeekAssessment(1, this.savedId, 'TBC',this.tbcWId, this.savedWeekId);
                     }
 
-                    if (!isNaN(this.nmId)) {
-                        this.assessService.deleteWeekAssessment(1, this.savedId, 'nextMonth', this.nmWId, this.savedWeekId);
-                    } else {
-                        this.assessService.deleteMonthAssesssment(this.savedId, this.savedMonth);
-                    }
-
-                  assessment.assessMonth = 'currentMonth';
-                    this.assessService.currentMonthAssessments.push(assessment);
-                    this.assessService.currentMonthAssessments.sort((a: any, b: any) => a.dueDate - b.dueDate);
-                    this.assessService.assignCurrentMonthAssessmentsID();
-                    this.assessService.storeCurrentMonthAssessments();
+                    assessment.assessMonth = 'TBC';
+                    this.assessService.tbcAssessments.push(assessment);
+                    this.assessService.assigntbcAssessmentsID();
+                    this.assessService.storetbcAssessments();
                     this.assessService.setWeekAssessments(assessment, 0);
+                    this.assessService.editTBCAssessmentId = {week: NaN, assessmentId: NaN};
+                    this.assessService.editCurrentMonthAssessmentId = {week: NaN, assessmentId: NaN};
+                    this.assessService.editMonthAssessmentId = {monthId: NaN, assessmentId: NaN};
                   });
+                  this.disableButton = true;
+
+                  // else if () {
+                  //   await this.assessService.modalCtrl.dismiss().then(() => {
+
+                  //     if (!isNaN(this.mId) && !isNaN(this.aId)) {
+                  //         this.assessService.deleteMonthAssesssment(this.savedId, this.savedMonth);
+                  //     } else {
+                  //         this.assessService.deleteWeekAssessment(1, this.savedId, 'TBC',this.tbcWId, this.savedWeekId);
+                  //     }
+
+                  //     assessment.assessMonth = 'TBC';
+                  //     this.assessService.tbcAssessments.push(assessment);
+                  //     this.assessService.tbcAssessments.sort((a: any, b: any) => a.dueDate - b.dueDate);
+                  //     this.assessService.assigntbcAssessmentsID();
+                  //     this.assessService.storetbcAssessments();
+                  //     this.assessService.setWeekAssessments(assessment, DUE_DATE);
+                  //     this.assessService.editTBCAssessmentId = {week: NaN, assessmentId: NaN};
+                  //     this.assessService.editMonthAssessmentId = {monthId: NaN, assessmentId: NaN};
+                  // });
+                  // this.disableButton = true;
+                  // }
 
             } else {
                 let DUE_DATE: number;
@@ -278,13 +298,18 @@ export class EditAssessmentComponent implements OnInit {
                         showDetails: {status: true, icon: 'chevron-up'}
                     };
 
-                    if (currentMonth === this.savedDate.month) {
+                    const isCurrentMonth = currentMonth === this.savedDate.month;
+                    const isNextMonth = (DATE < ((2 * WEEK) - TIME_GONE_IN_WEEK)) && (assessment.date.month !== currentMonth);
+
+                    if (isCurrentMonth || isNextMonth) {
                         await this.assessService.modalCtrl.dismiss().then(() => {
 
                             if (!isNaN(this.mId) && !isNaN(this.aId)) {
-                                this.assessService.deleteMonthAssesssment(this.savedId, this.savedMonth);
-                            } else {
-                                this.assessService.deleteWeekAssessment(1, this.savedId, 'currentMonth',this.cmWId, this.savedWeekId);
+                              this.assessService.deleteMonthAssesssment(this.savedId, this.savedMonth);
+                            } else if (!isNaN(this.tbcId)) {
+                              this.assessService.deleteWeekAssessment(1, this.savedId, 'TBC',this.tbcWId, this.savedWeekId);
+                            }else {
+                              this.assessService.deleteWeekAssessment(1, this.savedId, 'currentMonth',this.cmWId, this.savedWeekId);
                             }
 
                             assessment.assessMonth = 'currentMonth';
@@ -293,41 +318,19 @@ export class EditAssessmentComponent implements OnInit {
                             this.assessService.assignCurrentMonthAssessmentsID();
                             this.assessService.storeCurrentMonthAssessments();
                             this.assessService.setWeekAssessments(assessment, DUE_DATE);
+                            this.assessService.editTBCAssessmentId = {week: NaN, assessmentId: NaN};
                             this.assessService.editCurrentMonthAssessmentId = {week: NaN, assessmentId: NaN};
                             this.assessService.editMonthAssessmentId = {monthId: NaN, assessmentId: NaN};
                         });
                         this.disableButton = true;
-                    } else if ((DATE < ((2 * WEEK) - TIME_GONE_IN_WEEK)) && (assessment.date.month !== currentMonth)) {
-                      await this.assessService.modalCtrl.dismiss().then(() => {
-
-                        if (!isNaN(this.mId) && !isNaN(this.aId)) {
-                            this.assessService.deleteMonthAssesssment(this.savedId, this.savedMonth);
-                        } else {
-                            this.assessService.deleteWeekAssessment(1, this.savedId, 'nextMonth',this.nmWId, this.savedWeekId);
-                        }
-
-                        assessment.assessMonth = 'nextMonth';
-                        this.assessService.nextMonthAssessments.push(assessment);
-                        this.assessService.nextMonthAssessments.sort((a: any, b: any) => a.dueDate - b.dueDate);
-                        this.assessService.assignNextMonthAssessmentsID();
-                        this.assessService.storeNextMonthAssessments();
-                        this.assessService.setWeekAssessments(assessment, DUE_DATE);
-                        this.assessService.editNextMonthAssessmentId = {week: NaN, assessmentId: NaN};
-                        this.assessService.editMonthAssessmentId = {monthId: NaN, assessmentId: NaN};
-                    });
-                    this.disableButton = true;
                     } else {
                         await this.assessService.modalCtrl.dismiss().then(() => {
                             if (!isNaN(this.cmId)) {
-                                this.assessService.deleteWeekAssessment(1, this.savedId, 'currentMonth',this.cmWId, this.savedWeekId);
+                              this.assessService.deleteWeekAssessment(1, this.savedId, 'currentMonth',this.cmWId, this.savedWeekId);
+                            } else if (!isNaN(this.tbcId)) {
+                              this.assessService.deleteWeekAssessment(1, this.savedId, 'TBC',this.tbcWId, this.savedWeekId);
                             } else {
-                                this.assessService.deleteMonthAssesssment(this.savedId, this.savedMonth);
-                            }
-
-                            if (!isNaN(this.nmId)) {
-                              this.assessService.deleteWeekAssessment(1, this.savedId, 'nextMonth',this.nmWId, this.savedWeekId);
-                            } else {
-                                this.assessService.deleteMonthAssesssment(this.savedId, this.savedMonth);
+                              this.assessService.deleteMonthAssesssment(this.savedId, this.savedMonth);
                             }
 
                             const month = this.savedDate.month;
@@ -344,6 +347,7 @@ export class EditAssessmentComponent implements OnInit {
                             this.assessService.assignMonthAssessmentID(month, this.assessService.monthAssessments);
                             this.assessService.assignMonthAssessmentID(month, this.assessService.permMonthAssessments);
                             this.assessService.storeMonthAssessments();
+                            this.assessService.editTBCAssessmentId = {week: NaN, assessmentId: NaN};
                             this.assessService.editCurrentMonthAssessmentId = {week: NaN, assessmentId: NaN};
                             this.assessService.editMonthAssessmentId = {monthId: NaN, assessmentId: NaN};
                         });

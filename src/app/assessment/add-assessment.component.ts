@@ -221,11 +221,11 @@ export class AddAssessmentComponent implements OnInit {
 
                 await this.assessService.modalCtrl.dismiss().then(() => {
                     this.clearFilter(assessment.module);
-                    assessment.assessMonth = 'currentMonth';
-                    this.assessService.currentMonthAssessments.push(assessment);
-                    this.assessService.currentMonthAssessments.sort((a: any, b: any) => a.dueDate - b.dueDate);
-                    this.assessService.assignCurrentMonthAssessmentsID();
-                    this.assessService.storeCurrentMonthAssessments();
+                    assessment.assessMonth = 'TBC';
+                    this.assessService.tbcAssessments.push(assessment);
+                    this.assessService.tbcAssessments.sort((a: any, b: any) => a.dueDate - b.dueDate);
+                    this.assessService.assigntbcAssessmentsID();
+                    this.assessService.storetbcAssessments();
                     this.assessService.setWeekAssessments(assessment, 0);
                     this.clearAssessment();
                 });
@@ -280,7 +280,10 @@ export class AddAssessmentComponent implements OnInit {
                         showDetails: {status: true, icon: 'chevron-up'}
                     };
 
-                    if (currentMonth === assessment.date.month) {
+                    const isCurrentMonth = currentMonth === assessment.date.month;
+                    const isNextMonth = (DATE < ((2 * WEEK) - TIME_GONE_IN_WEEK)) && (assessment.date.month !== currentMonth);
+
+                    if (isCurrentMonth || isNextMonth) {
 
                       await this.assessService.modalCtrl.dismiss().then(() => {
                         this.clearFilter(assessment.module);
@@ -294,23 +297,7 @@ export class AddAssessmentComponent implements OnInit {
                       });
                       this.disableButton = true;
 
-                    } else if ((DATE < ((2 * WEEK) - TIME_GONE_IN_WEEK)) && (assessment.date.month !== currentMonth)) {
-                      if (assessment.description !== '' || assessment.location !== '') {
-                        assessment.showDetails = {status: true, icon: 'chevron-up'};
-                      }
-
-                      await this.assessService.modalCtrl.dismiss().then(() => {
-                      this.clearFilter(assessment.module);
-                      assessment.assessMonth = 'nextMonth';
-                      this.assessService.nextMonthAssessments.push(assessment);
-                      this.assessService.nextMonthAssessments.sort((a: any, b: any) => a.dueDate - b.dueDate);
-                      this.assessService.assignNextMonthAssessmentsID();
-                      this.assessService.storeNextMonthAssessments();
-                      this.assessService.setWeekAssessments(assessment, DUE_DATE);
-                      this.clearAssessment();
-                      });
-                      this.disableButton = true;
-                    }else {
+                    } else {
                         const month = this.date.month;
                         const tempMonthID = this.assessService.getMonthID(month, this.assessService.monthAssessments);
                         const permMonthID = this.assessService.getMonthID(month, this.assessService.permMonthAssessments);
