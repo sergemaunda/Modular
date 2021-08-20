@@ -90,16 +90,18 @@ export class AssessmentService {
   configLocalNotifications() {
     this.notifications.splice(0, this.notifications.length);
     this.currentMonthAssessments.forEach((assessment) => {
-      this.notifications.push(assessment.notifications);
+      assessment.notifications.forEach((notification) => {
+        this.notifications.push(notification);
+      });
     });
     this.assignNotificationId();
   }
 
   assignNotificationId() {
     let id = -1;
-    this.notifications.forEach(element => {
+    this.notifications.forEach(notif => {
        ++id;
-       element.id = id;
+       notif.id = id;
     });
   }
 
@@ -175,6 +177,8 @@ export class AssessmentService {
     this.deleteWeekAssessment(oldAssessmentIDs, initialID, 'currentMonth');
     this.configLocalNotifications();
     this.setLocalNotifications(this.notifications);
+    console.log(this.currentMonthAssessments);
+    console.log(this.notifications);
   }
 
   clearAssessments() {

@@ -193,8 +193,8 @@ export class AddAssessmentComponent implements OnInit {
 
     setNotifications(assessment: any): any{
       const day = 86400000;
-      const minute = 6000;
-      const hour = 36000;
+      const minute = 60000;
+      const hour = 3600000;
       const today = new Date();
       const timeNow = today.getTime();
       const timeMilliseconds = this.assessService.getMilliseconds(parseInt(assessment.time.hour, 10), parseInt(assessment.time.minute, 10));
@@ -214,7 +214,8 @@ export class AddAssessmentComponent implements OnInit {
                         timeNow > (date - (day*5)) && timeNow < (date - (day*3)) ? timeNow + minute : (date - (day*5)),
                         timeNow > (date - (day*3)) && timeNow < (date - (day*1)) ? timeNow + minute : (date - (day*3)),
                         timeNow > (date - (day*1)) && timeNow < (date - (day*0)) ? timeNow + minute : (date - (day*1)),
-                        date - (day*0 - hour) // 1 hour before assessment
+                        timeNow > (date - (day*0)) && timeNow < (assessment.dueDate - (day*0 + hour)) ? timeNow + minute : (date - (day*0)),
+                        assessment.dueDate - (day*0 + hour) // 1 hour before assessment
       ];
 
       for (let i = 0; i < noOfNotifications; ++i) {

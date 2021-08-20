@@ -71,6 +71,12 @@ export class EditTypeComponent implements OnInit {
                     });
                 });
 
+                this.assessService.tbcAssessments.forEach((assessment) => {
+                  if (assessment.type.name === this.savedName) {
+                      assessment.type.name = this.type.name;
+                  }
+                });
+
                 this.assessService.currentMonthAssessments.forEach((assessment) => {
                     if (assessment.type.name === this.savedName) {
                         assessment.type.name = this.type.name;
@@ -86,6 +92,7 @@ export class EditTypeComponent implements OnInit {
                 });
 
                 this.assessService.storeTypes();
+                this.assessService.storetbcAssessments();
                 this.assessService.storeCurrentMonthAssessments();
                 this.assessService.storeMonthAssessments();
                 this.assessService.presentToast('Edit saved!');
