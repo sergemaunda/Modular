@@ -191,6 +191,45 @@ export class AddAssessmentComponent implements OnInit {
             this.time.timezone = this.assessService.getTimezone(this.time.timeString);
     }
 
+    setNotifications(assessment: any): any{
+      const day = 86400000;
+      const minute = 6000;
+      const hour = 36000;
+      const today = new Date();
+      const timeNow = today.getTime();
+      const timeMilliseconds = this.assessService.getMilliseconds(parseInt(assessment.time.hour, 10), parseInt(assessment.time.minute, 10));
+      const time = assessment.time.hasTime ? timeMilliseconds:0;
+      const date = (assessment.dueDate - time) + (hour*8); // notifications will appear at 08h00
+      const noOfNotifications = assessment.time.hasTime ? 6:5;
+      const notifications = [];
+
+      const body = [assessment.title + ' due next week! Start preparing.',
+      assessment.title + ' due soon! Open up those books and get to studying.',
+      assessment.title + ' due in 3 days! Study! Study! Study!',
+      assessment.title + ' due tomorrow! Hope you ready.',
+      assessment.title + ' due today! Goodluck, you got this.',
+      assessment.title + ' due in 1 hour!'];
+
+      const schedule = [timeNow > (date - (day*7)) && timeNow < (date - (day*5)) ? timeNow + minute : (date - (day*7)),
+                        timeNow > (date - (day*5)) && timeNow < (date - (day*3)) ? timeNow + minute : (date - (day*5)),
+                        timeNow > (date - (day*3)) && timeNow < (date - (day*1)) ? timeNow + minute : (date - (day*3)),
+                        timeNow > (date - (day*1)) && timeNow < (date - (day*0)) ? timeNow + minute : (date - (day*1)),
+                        date - (day*0 - hour) // 1 hour before assessment
+      ];
+
+      for (let i = 0; i < noOfNotifications; ++i) {
+        const notification = {
+          id: undefined,
+          title: assessment.module,
+          body: body[i],
+          schedule: {at: new Date(schedule[i])}
+        };
+        notifications.push(notification);
+      };
+
+      return notifications;
+    }
+
     async add() {
         if (this.assessService.module === undefined || this.assessService.type === undefined || this.title.trim() === '') {
             if (this.assessService.module === undefined) {this.moduleRequired = true; }
@@ -216,7 +255,8 @@ export class AddAssessmentComponent implements OnInit {
                     rawTime: '',
                     assessMonth: undefined,
                     dueDate: 0,
-                    showDetails: {status: true, icon: 'chevron-up'}
+                    showDetails: {status: true, icon: 'chevron-up'},
+                    notifications: undefined
                 };
 
                 await this.assessService.modalCtrl.dismiss().then(() => {
@@ -277,22 +317,25 @@ export class AddAssessmentComponent implements OnInit {
                         rawTime: this.time.timeString,
                         assessMonth: undefined,
                         dueDate: DUE_DATE,
-                        showDetails: {status: true, icon: 'chevron-up'}
+                        showDetails: {status: true, icon: 'chevron-up'},
+                        notifications: undefined
                     };
 
                     const isCurrentMonth = currentMonth === assessment.date.month;
                     const isNextMonth = (DATE < ((2 * WEEK) - TIME_GONE_IN_WEEK)) && (assessment.date.month !== currentMonth);
 
                     if (isCurrentMonth || isNextMonth) {
-
                       await this.assessService.modalCtrl.dismiss().then(() => {
                         this.clearFilter(assessment.module);
                         assessment.assessMonth = 'currentMonth';
+                        assessment.notifications = this.setNotifications(assessment);
                         this.assessService.currentMonthAssessments.push(assessment);
                         this.assessService.currentMonthAssessments.sort((a: any, b: any) => a.dueDate - b.dueDate);
                         this.assessService.assignCurrentMonthAssessmentsID();
                         this.assessService.storeCurrentMonthAssessments();
                         this.assessService.setWeekAssessments(assessment, DUE_DATE);
+                        this.assessService.configLocalNotifications();
+                        this.assessService.setLocalNotifications(this.assessService.notifications);
                         this.clearAssessment();
                       });
                       this.disableButton = true;

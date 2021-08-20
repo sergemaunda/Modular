@@ -171,6 +171,45 @@ export class EditAssessmentComponent implements OnInit {
       this.savedTime.timezone = this.assessService.getTimezone(this.assessment.rawTime);
     }
 
+    setNotifications(assessment: any): any{
+      const day = 86400000;
+      const minute = 6000;
+      const hour = 36000;
+      const today = new Date();
+      const timeNow = today.getTime();
+      const timeMilliseconds = this.assessService.getMilliseconds(parseInt(assessment.time.hour, 10), parseInt(assessment.time.minute, 10));
+      const time = assessment.time.hasTime ? timeMilliseconds:0;
+      const date = (assessment.dueDate - time) + (hour*8); // notifications will appear at 08h00
+      const noOfNotifications = assessment.time.hasTime ? 6:5;
+      const notifications = [];
+
+      const body = [assessment.title + ' due next week! Start preparing.',
+      assessment.title + ' due soon! Open up those books and get to studying.',
+      assessment.title + ' due in 3 days! Study! Study! Study!',
+      assessment.title + ' due tomorrow! Hope you ready.',
+      assessment.title + ' due today! Goodluck, you got this.',
+      assessment.title + ' due in 1 hour!'];
+
+      const schedule = [timeNow > (date - (day*7)) && timeNow < (date - (day*5)) ? timeNow + minute : (date - (day*7)),
+                        timeNow > (date - (day*5)) && timeNow < (date - (day*3)) ? timeNow + minute : (date - (day*5)),
+                        timeNow > (date - (day*3)) && timeNow < (date - (day*1)) ? timeNow + minute : (date - (day*3)),
+                        timeNow > (date - (day*1)) && timeNow < (date - (day*0)) ? timeNow + minute : (date - (day*1)),
+                        date - (day*0 - hour) // 1 hour before assessment
+      ];
+
+      for (let i = 0; i < noOfNotifications; ++i) {
+        const notification = {
+          id: undefined,
+          title: assessment.module,
+          body: body[i],
+          schedule: {at: new Date(schedule[i])}
+        };
+        notifications.push(notification);
+      };
+
+      return notifications;
+    }
+
     assessmentChange() {
         this.disableButton = this.savedRawDate.slice(0,10) === this.assessment.rawDate.slice(0,10) &&
                                 this.savedRawTime.slice(11,16) === this.assessment.rawTime.slice(11,16) &&
@@ -202,7 +241,8 @@ export class EditAssessmentComponent implements OnInit {
                     rawTime: '',
                     assessMonth: undefined,
                     dueDate: 0,
-                    showDetails: {status: true, icon: 'chevron-up'}
+                    showDetails: {status: true, icon: 'chevron-up'},
+                    notifications: undefined
                 };
 
                 await this.assessService.modalCtrl.dismiss().then(() => {
@@ -224,27 +264,6 @@ export class EditAssessmentComponent implements OnInit {
                     this.assessService.editMonthAssessmentId = {monthId: NaN, assessmentId: NaN};
                   });
                   this.disableButton = true;
-
-                  // else if () {
-                  //   await this.assessService.modalCtrl.dismiss().then(() => {
-
-                  //     if (!isNaN(this.mId) && !isNaN(this.aId)) {
-                  //         this.assessService.deleteMonthAssesssment(this.savedId, this.savedMonth);
-                  //     } else {
-                  //         this.assessService.deleteWeekAssessment(1, this.savedId, 'TBC',this.tbcWId, this.savedWeekId);
-                  //     }
-
-                  //     assessment.assessMonth = 'TBC';
-                  //     this.assessService.tbcAssessments.push(assessment);
-                  //     this.assessService.tbcAssessments.sort((a: any, b: any) => a.dueDate - b.dueDate);
-                  //     this.assessService.assigntbcAssessmentsID();
-                  //     this.assessService.storetbcAssessments();
-                  //     this.assessService.setWeekAssessments(assessment, DUE_DATE);
-                  //     this.assessService.editTBCAssessmentId = {week: NaN, assessmentId: NaN};
-                  //     this.assessService.editMonthAssessmentId = {monthId: NaN, assessmentId: NaN};
-                  // });
-                  // this.disableButton = true;
-                  // }
 
             } else {
                 let DUE_DATE: number;
@@ -295,7 +314,8 @@ export class EditAssessmentComponent implements OnInit {
                         rawTime: this.assessment.rawTime,
                         assessMonth: undefined,
                         dueDate: DUE_DATE,
-                        showDetails: {status: true, icon: 'chevron-up'}
+                        showDetails: {status: true, icon: 'chevron-up'},
+                        notifications: undefined
                     };
 
                     const isCurrentMonth = currentMonth === this.savedDate.month;
@@ -313,11 +333,14 @@ export class EditAssessmentComponent implements OnInit {
                             }
 
                             assessment.assessMonth = 'currentMonth';
+                            assessment.notifications = this.setNotifications(assessment);
                             this.assessService.currentMonthAssessments.push(assessment);
                             this.assessService.currentMonthAssessments.sort((a: any, b: any) => a.dueDate - b.dueDate);
                             this.assessService.assignCurrentMonthAssessmentsID();
                             this.assessService.storeCurrentMonthAssessments();
                             this.assessService.setWeekAssessments(assessment, DUE_DATE);
+                            this.assessService.configLocalNotifications();
+                            this.assessService.setLocalNotifications(this.assessService.notifications);
                             this.assessService.editTBCAssessmentId = {week: NaN, assessmentId: NaN};
                             this.assessService.editCurrentMonthAssessmentId = {week: NaN, assessmentId: NaN};
                             this.assessService.editMonthAssessmentId = {monthId: NaN, assessmentId: NaN};

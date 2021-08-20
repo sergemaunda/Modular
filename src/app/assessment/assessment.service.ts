@@ -83,52 +83,28 @@ export class AssessmentService {
   }
 // localnotifs -  60, today - 03h00, tommorow - 09h00, week, month
 
-  setLocalNotifications() {
-    LocalNotifications.schedule({
-      notifications: [
-        {
-          id: 0,
-          title: 'Test Notification',
-          body: 'Assessment due next week! Start preparing.',
-          schedule: {at: new Date(Date.now() + 1000 * 10)}
-        },
-        {
-          id: 1,
-          title: 'Test Notification',
-          body: 'Assessment due soon! Open up those books and get to studying.',
-          schedule: {at: new Date(Date.now() + 1000 * 10)}
-        },
-        {
-          id: 2,
-          title: 'Test Notification',
-          body: 'Assessment due in 3 days! Study! Study! Study!',
-          schedule: {at: new Date(Date.now() + 1000 * 10)}
-        },
-        {
-          id: 3,
-          title: 'Test Notification',
-          body: 'Assessment due tomorrow at [time]! Hope you ready.',
-          schedule: {at: new Date(Date.now() + 1000 * 10)}
-        },
-        {
-          id: 4,
-          title: 'Test Notification',
-          body: 'Assessment due today at [time]! Goodluck, you got this.',
-          schedule: {at: new Date(Date.now() + 1000 * 10)}
-        },
-        {
-          id: 5,
-          title: 'Test Notification',
-          body: 'Assessment due in 1 hour at [time]! I believe in you.',
-          schedule: {at: new Date(Date.now() + 1000 * 10)}
-        }
-      ]
+  setLocalNotifications(notifications: any) {
+    LocalNotifications.schedule({notifications});
+  }
+
+  configLocalNotifications() {
+    this.notifications.splice(0, this.notifications.length);
+    this.currentMonthAssessments.forEach((assessment) => {
+      this.notifications.push(assessment.notifications);
+    });
+    this.assignNotificationId();
+  }
+
+  assignNotificationId() {
+    let id = -1;
+    this.notifications.forEach(element => {
+       ++id;
+       element.id = id;
     });
   }
 
   async assessOnInit() {
     await this.storage.create();
-    this.setLocalNotifications();
     const today = new Date();
     const currentMonth = this.getUTCMonth(today.getMonth());
 
@@ -197,6 +173,8 @@ export class AssessmentService {
       }
     });
     this.deleteWeekAssessment(oldAssessmentIDs, initialID, 'currentMonth');
+    this.configLocalNotifications();
+    this.setLocalNotifications(this.notifications);
   }
 
   clearAssessments() {
@@ -310,6 +288,8 @@ export class AssessmentService {
       this.currentMonthAssessments.sort((a: any, b: any) => a.dueDate - b.dueDate);
       this.assignCurrentMonthAssessmentsID();
       this.storeCurrentMonthAssessments();
+      this.configLocalNotifications();
+      this.setLocalNotifications(this.notifications);
     }
 
     if (assessmentMonth === 'TBC') {
@@ -348,6 +328,8 @@ export class AssessmentService {
       this.currentMonthAssessments.splice(id, oldAssessmentIDs);
       this.assignCurrentMonthAssessmentsID();
       this.storeCurrentMonthAssessments();
+      this.configLocalNotifications();
+      this.setLocalNotifications(this.notifications);
     }
 
     if (assessmentMonth === 'TBC') {
