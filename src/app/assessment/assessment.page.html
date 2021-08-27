@@ -26,11 +26,7 @@
     <ion-img src="assets/assessments.svg"></ion-img>
   </div>
 
-  <!-- <ion-item color="dark" lines="none">
-    <h1 class="font-day">Good evening</h1>
-  </ion-item> -->
-
-  <ion-card class="week-card" color="dark" *ngIf="toBeConfirmed.length !== 0">
+  <ion-card color="dark" *ngIf="toBeConfirmed.length !== 0">
     <ion-item color="dark" lines="none" detail="false">
       <ion-icon class="icon-dates" src="assets/tbc.svg" slot="start"></ion-icon>
       <ion-label>
@@ -40,7 +36,7 @@
     </ion-item>
   </ion-card>
 
-  <div *ngIf="toBeConfirmed.length !== 0">
+  <div class="week-card" *ngIf="toBeConfirmed.length !== 0">
     <div *ngFor="let a of toBeConfirmed">
       <ion-card color="dark">
           <ion-item class="item-to_be_confirmed" (click)="showWeekAssessmentDetails(0, a.weekId, 'click')" color="dark" lines="inset"
@@ -100,17 +96,17 @@
     </div>
   </div>
 
-  <ion-card class="week-card" color="dark" *ngIf="thisWeek.length !== 0">
+  <ion-card color="dark" *ngIf="thisWeek.length !== 0">
     <ion-item color="dark" lines="none" detail="false">
       <ion-icon class="icon-dates" src="assets/this-week.svg" slot="start"></ion-icon>
       <ion-label>
-        <h6 class="font-week-duration">TODAY - 21 AUGUST</h6>
+        <h6 class="font-week-duration">TODAY - {{ assessService.dateRanges[1] }}</h6>
         <h3 class="font-week">This week</h3>
       </ion-label>
     </ion-item>
   </ion-card>
 
-  <div *ngIf="thisWeek.length !== 0">
+  <div class="week-card" *ngIf="thisWeek.length !== 0">
     <div *ngFor="let a of thisWeek">
       <ion-card color="dark">
           <ion-item class="item-this_week" (click)="showWeekAssessmentDetails(1, a.weekId,'click')" color="dark"  lines="inset"
@@ -172,17 +168,17 @@
     </div>
   </div>
 
-  <ion-card class="week-card" color="dark" *ngIf="nextWeek.length !== 0">
+  <ion-card  color="dark" *ngIf="nextWeek.length !== 0">
     <ion-item color="dark" lines="none" detail="false">
       <ion-icon class="icon-dates" src="assets/next-week.svg" slot="start"></ion-icon>
       <ion-label>
-        <h6 class="font-week-duration">22 AUGUST - 28 AUGUST</h6>
+        <h6 class="font-week-duration">{{ assessService.dateRanges[2] + ' - ' + assessService.dateRanges[3] }}</h6>
         <h3 class="font-week">Next week</h3>
       </ion-label>
     </ion-item>
   </ion-card>
 
-  <div  *ngIf="nextWeek.length !== 0">
+  <div class="week-card" *ngIf="nextWeek.length !== 0">
     <div *ngFor="let a of nextWeek">
       <ion-card color="dark">
         <ion-item class="item-next_week" (click)="showWeekAssessmentDetails(2, a.weekId, 'click')" color="dark" lines="inset"
@@ -245,17 +241,17 @@
     </div>
   </div>
 
-  <ion-card class="week-card" color="dark" *ngIf="upComingWeeks.length !== 0">
+  <ion-card color="dark" *ngIf="upComingWeeks.length !== 0">
     <ion-item color="dark" lines="none" detail="false">
       <ion-icon class="icon-dates" src="assets/upcoming-weeks.svg" slot="start"></ion-icon>
       <ion-label>
-        <h6 class="font-week-duration">29 AUGUST - 31 AUGUST</h6>
+        <h6 class="font-week-duration">{{ assessService.dateRanges[4] + ' - ' + assessService.dateRanges[5] }}</h6>
         <h3 class="font-week">Upcoming weeks</h3>
       </ion-label>
     </ion-item>
   </ion-card>
 
-  <div *ngIf="upComingWeeks.length !== 0">
+  <div class="week-card" *ngIf="upComingWeeks.length !== 0">
     <div *ngFor="let a of upComingWeeks">
       <ion-card color="dark" >
         <ion-item class="item-upcoming_week" (click)="showWeekAssessmentDetails(3, a.weekId, 'click')" color="dark" detail="false" lines="inset"
@@ -318,8 +314,8 @@
     </div>
   </div>
 
-  <div *ngFor="let month of assessService.monthAssessments">
-    <ion-card class="week-card" color="dark">
+  <div class="week-card" *ngFor="let month of assessService.monthAssessments">
+    <ion-card color="dark">
       <ion-item color="dark" lines="none" detail="false">
         <ion-icon class="icon-dates" [src]="month.monthSvg" slot="start"></ion-icon>
         <ion-label>

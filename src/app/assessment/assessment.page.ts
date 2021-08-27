@@ -11,6 +11,7 @@ import { FilterComponent } from './filter.component';
   templateUrl: './assessment.page.html',
   styleUrls: ['./assessment.page.scss'],
 })
+
 export class AssessmentPage implements OnInit {
   weekAssessments = [];
   toBeConfirmed = [];

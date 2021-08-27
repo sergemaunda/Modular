@@ -76,10 +76,10 @@ export class AddModuleComponent implements OnInit {
                 this.assessService.modules.push({
                     id: undefined,
                     name: this.module.name,
-                    code: this.module.code.toUpperCase(),
+                    code: this.module.code.toUpperCase().trim(),
                     lecturer: this.module.lecturer
                 });
-                this.assessService.module = this.module.code.toUpperCase();
+                this.assessService.module = this.module.code.toUpperCase().trim();
                 this.assessService.assignModuleID();
                 this.assessService.storeModules();
             });

@@ -179,6 +179,7 @@ export class AddAssessmentComponent implements OnInit {
             this.date.monthColor = this.assessService.getMonth(this.date.dateString).color;
             this.date.monthHexColor = this.assessService.getMonth(this.date.dateString).hexColor;
             this.date.year = this.assessService.getYear(this.date.dateString);
+            this.time.timezone = this.assessService.getTimezone(this.date.dateString);
             DATE.setFullYear(parseInt(this.date.year, 10), parseInt(this.date.monthNo, 10) - 1, parseInt(this.date.day, 10));
 
             this.date.weekdayNo = DATE.getDay();
@@ -188,7 +189,6 @@ export class AddAssessmentComponent implements OnInit {
     setTime() {
             this.time.minute = this.assessService.getMinute(this.time.timeString);
             this.time.hour = this.assessService.getHour(this.time.timeString);
-            this.time.timezone = this.assessService.getTimezone(this.time.timeString);
     }
 
     setNotifications(assessment: any): any{
@@ -199,13 +199,13 @@ export class AddAssessmentComponent implements OnInit {
       const timeNow = today.getTime();
       const timeMilliseconds = this.assessService.getMilliseconds(parseInt(assessment.time.hour, 10), parseInt(assessment.time.minute, 10));
       const time = assessment.time.hasTime ? timeMilliseconds:0;
-      const date = (assessment.dueDate - time) + (hour*8); // notifications will appear at 08h00
+      const date = (assessment.dueDate - time); // notifications will appear at 00h00
       const noOfNotifications = assessment.time.hasTime ? 6:5;
       const notifications = [];
 
       const body = [assessment.title + ' due next week! Start preparing.',
-      assessment.title + ' due soon! Open up those books and get to studying.',
-      assessment.title + ' due in 3 days! Study! Study! Study!',
+      assessment.title + ' due soon! Open up those books and study.',
+      assessment.title + ' due in a few days! Study! Study! Study!',
       assessment.title + ' due tomorrow! Hope you ready.',
       assessment.title + ' due today! Goodluck, you got this.',
       assessment.title + ' due in 1 hour!'];
@@ -221,9 +221,11 @@ export class AddAssessmentComponent implements OnInit {
       for (let i = 0; i < noOfNotifications; ++i) {
         const notification = {
           id: undefined,
-          title: assessment.module,
+          title: assessment.module + ' - ' + assessment.type.name,
           body: body[i],
-          schedule: {at: new Date(schedule[i])}
+          schedule: {at: new Date(schedule[i])},
+          iconColor: '#ffc409',
+          smallIcon: 'icon'
         };
         notifications.push(notification);
       };
@@ -286,20 +288,22 @@ export class AddAssessmentComponent implements OnInit {
                 }
 
                 if (!(this.date.dateString === '') && (this.time.timeString === '')) {
+                    const DAY = 86399999;
                     this.setDate();
                     hasDate = true;
-                    DUE_DATE = Date.UTC(parseInt(this.date.year, 10), parseInt(this.date.monthNo, 10) - 1, parseInt(this.date.day, 10));
+                    DUE_DATE = Date.UTC(parseInt(this.date.year, 10), parseInt(this.date.monthNo, 10) - 1, parseInt(this.date.day, 10))
+                    + DAY + this.time.timezone;
                 }
 
                 const DATE = DUE_DATE - Date.now();
 
                 if (DATE >= 0) {
-                    const DAY = 86340000;
-                    const WEEK = 604740000;
+                    const DAY = 86399999;
+                    const WEEK = 604799999;
                     const TODAY = new Date();
                     const TIME_GONE_IN_DAY = this.assessService.getMilliseconds(TODAY.getHours(), TODAY.getMinutes());
                     const TIME_GONE_IN_WEEK = (DAY * (TODAY.getDay())) + TIME_GONE_IN_DAY;
-                    const currentMonth = this.assessService.getUTCMonth(TODAY.getMonth());
+                    const currentMonth = this.assessService.getUTCMonth(TODAY.getMonth()).month;
 
                     const assessment = {
                         id: undefined,

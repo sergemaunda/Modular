@@ -77,9 +77,9 @@ export class EditModuleComponent implements OnInit {
     }
 
     moduleChange() {
-        this.disableButton = this.savedName === this.module.name &&
-                            this.savedCode === this.module.code &&
-                            this.savedLecturer === this.module.lecturer;
+        this.disableButton = this.savedName.trim() === this.module.name.trim() &&
+                            this.savedCode.trim() === this.module.code.trim() &&
+                            this.savedLecturer.trim() === this.module.lecturer.trim();
     }
 
     async save() {
@@ -88,7 +88,7 @@ export class EditModuleComponent implements OnInit {
         } else {
             await this.assessService.modalCtrl.dismiss().then(() => {
                 this.assessService.modules[this.index].name = this.module.name;
-                this.assessService.modules[this.index].code = this.module.code.toUpperCase();
+                this.assessService.modules[this.index].code = this.module.code.toUpperCase().trim();
                 this.assessService.modules[this.index].lecturer = this.module.lecturer;
 
                 this.assessService.storeModules();
