@@ -178,7 +178,7 @@ export class EditAssessmentComponent implements OnInit {
       const today = new Date();
       const timeNow = today.getTime();
       const timeMilliseconds = this.assessService.getMilliseconds(parseInt(assessment.time.hour, 10), parseInt(assessment.time.minute, 10));
-      const time = assessment.time.hasTime ? timeMilliseconds:0;
+      const time = assessment.time.hasTime ? timeMilliseconds:(day - 1);
       const date = (assessment.dueDate - time); // notifications will appear at 08h00
       const noOfNotifications = assessment.time.hasTime ? 6:5;
       const notifications = [];

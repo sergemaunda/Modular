@@ -7,10 +7,12 @@ import { IonTextarea } from '@ionic/angular';
 
 @Component({
     template: `
-    <ion-content color="dark">
+    <!-- <ion-content color="dark">
         <ion-grid class="center">
             <ion-row>
-                <ion-col offset-lg="3" size-lg="6">
+                <ion-col offset-lg="3" size-lg="6"> -->
+                      <div class="center-card">
+                        <div class="scroll-card">
                         <ion-card color="dark">
                             <ion-item color="warning" lines="none" detail="false">
                                 <ion-title>Assessment</ion-title>
@@ -83,10 +85,10 @@ import { IonTextarea } from '@ionic/angular';
                                     placeholder="Enter location" [(ngModel)]="location"></ion-input>
                                 </ion-item>
                                 <ion-item color="dark" detail="false" lines="full">
-                                    <ion-label position="floating">Description</ion-label>
-                                    <ion-textarea
-                                        #textAreaId [(ngModel)]="description">
-                                    </ion-textarea>
+                                  <ion-label position="floating">Description</ion-label>
+                                  <ion-textarea autoGrow rows="4"
+                                      #textAreaId [(ngModel)]="description">
+                                  </ion-textarea>
                                 </ion-item>
                             </ion-card-content>
 
@@ -94,10 +96,12 @@ import { IonTextarea } from '@ionic/angular';
                                 <ion-button [disabled]="disableButton" (click)="add()" color="warning" expand="block">Add</ion-button>
                             </ion-card-content>
                         </ion-card>
-                </ion-col>
+                        <div>
+                      </div>
+                <!-- </ion-col>
             </ion-row>
         </ion-grid>
-  </ion-content>
+  </ion-content> -->
     `,
 
     styleUrls: ['./assessment.page.scss']
@@ -198,7 +202,7 @@ export class AddAssessmentComponent implements OnInit {
       const today = new Date();
       const timeNow = today.getTime();
       const timeMilliseconds = this.assessService.getMilliseconds(parseInt(assessment.time.hour, 10), parseInt(assessment.time.minute, 10));
-      const time = assessment.time.hasTime ? timeMilliseconds:0;
+      const time = assessment.time.hasTime ? timeMilliseconds:(day - 1);
       const date = (assessment.dueDate - time); // notifications will appear at 00h00
       const noOfNotifications = assessment.time.hasTime ? 6:5;
       const notifications = [];

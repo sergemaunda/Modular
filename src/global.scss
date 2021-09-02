@@ -62,8 +62,9 @@
   --color: white;
 }
 
-.options-btn .action-sheet-icon {
+.options-btn {
   --color: white;
+  color: white !important;
 }
 
 .alert .alert-wrapper {

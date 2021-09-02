@@ -38,21 +38,25 @@ export class AssessmentService {
     {
       id: 0,
       period: 'To be confirmed',
+      showAssessments: {status: true, icon: 'chevron-up-circle-outline'},
       assessment: []
     },
     {
       id: 1,
       period: 'This week',
+      showAssessments: {status: false, icon: 'chevron-down-circle-outline'},
       assessment: []
     },
     {
       id: 2,
       period: 'Next week',
+      showAssessments: {status: false, icon: 'chevron-down-circle-outline'},
       assessment: []
     },
     {
       id: 3,
       period: 'Upcoming weeks',
+      showAssessments: {status: false, icon: 'chevron-down-circle-outline'},
       assessment: []
     },
   ];
@@ -107,6 +111,10 @@ export class AssessmentService {
         this.dateRanges[5] = this.getUTCMonth(today.getMonth()).lastDay + ' ' + this.getUTCMonth(today.getMonth()).month.toUpperCase();
       }
     }
+
+    console.log(this.dateRanges[0] + ' - ' + this.dateRanges[1]);
+    console.log(this.dateRanges[2] + ' - ' + this.dateRanges[3]);
+    console.log(this.dateRanges[4] + ' - ' + this.dateRanges[5]);
   }
 
 
@@ -171,6 +179,8 @@ export class AssessmentService {
     }
 
     this.permMonthAssessments.forEach((month) => {
+      month.showMonths = {status: false, icon: 'chevron-down-circle-outline'};
+
       month.assessment.forEach((assessment) => {
         assessment.showDetails = {status: false, icon: 'chevron-down'};
       });
@@ -750,6 +760,7 @@ export class AssessmentService {
       sortID: this.getMonthSortID(name),
       month: name,
       monthSvg: this.getMonthSvg(name),
+      showMonths: {status: true, icon: 'chevron-up-circle-outline'},
       assessment: []
     });
     assessments.sort((a: any, b: any) => a.sortID - b.sortID);

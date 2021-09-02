@@ -23,6 +23,7 @@ export class AssessmentPage implements OnInit {
 
   showBtn: boolean;
   oldTop: number;
+  currentMonth: string;
 
   constructor(
     private actionSheetCtrl: ActionSheetController,
@@ -32,6 +33,8 @@ export class AssessmentPage implements OnInit {
   }
 
   ngOnInit() {
+    const today = new Date();
+    this.currentMonth = this.assessService.getUTCMonth(today.getMonth()).month;
     this.assessService.assessOnInit();
     this.assessService.typesOnInit();
     this.assessService.modulesOnInit();
@@ -91,28 +94,46 @@ export class AssessmentPage implements OnInit {
 
   showWeekAssessmentDetails(weekId: number, id: number, event: string) {
     const assessment = this.weekAssessments[weekId].assessment[id];
-    if (event === 'click') {
-      assessment.showDetails.status = !assessment.showDetails.status;
-      if (assessment.showDetails.status === true) {
-        assessment.showDetails.icon = 'chevron-up';
-      } else {
-        assessment.showDetails.icon = 'chevron-down';
-      }
+    assessment.showDetails.status = !assessment.showDetails.status;
+
+    if (assessment.showDetails.status === true) {
+      assessment.showDetails.icon = 'chevron-up';
+    } else {
+      assessment.showDetails.icon = 'chevron-down';
     }
-    if (event === 'drag') {assessment.showDetails.status = false; assessment.showDetails.icon = 'chevron-down'; }
   }
 
   showMonthAssessmentDetails(monthId: number, id: number, event: string) {
     const assessment = this.assessService.monthAssessments[monthId].assessment[id];
-    if (event === 'click') {
-      assessment.showDetails.status = !assessment.showDetails.status;
-      if (assessment.showDetails.status === true) {
-        assessment.showDetails.icon = 'chevron-up';
-      } else {
-        assessment.showDetails.icon = 'chevron-down';
-      }
+    assessment.showDetails.status = !assessment.showDetails.status;
+
+    if (assessment.showDetails.status === true) {
+      assessment.showDetails.icon = 'chevron-up';
+    } else {
+      assessment.showDetails.icon = 'chevron-down';
     }
-    if (event === 'drag') {assessment.showDetails.status = false; assessment.showDetails.icon = 'chevron-down'; }
+  }
+
+  showAssessments(weekId: number) {
+    const showDetails = this.weekAssessments[weekId].showAssessments;
+    showDetails.status = !showDetails.status;
+
+    if (showDetails.status === true) {
+      showDetails.icon = 'chevron-up-circle-outline';
+    } else {
+      showDetails.icon = 'chevron-down-circle-outline';
+    }
+  }
+
+  showMonths(monthId: number) {
+    const month = this.assessService.monthAssessments[monthId];
+    month.showMonths.status = !month.showMonths.status;
+    console.log(month.showMonths.status);
+    if (month.showMonths.status === true) {
+      month.showMonths.icon = 'chevron-up-circle-outline';
+    } else {
+      month.showMonths.icon = 'chevron-down-circle-outline';
+    }
   }
 
   deleteWeekAssessment(weekType: number, weekId: number, assessId: number, monthType: string) {

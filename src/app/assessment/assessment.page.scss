@@ -25,6 +25,18 @@
   transform: translate(-50%, -50%);
 }
 
+.center-card {
+  overflow-y: auto;
+}
+
+.scroll-card {
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #222428;
+}
+
 .img-assessments {
   position: relative;
   top: 50%;
@@ -159,7 +171,8 @@
   background: #222428;
   padding-left: 16px;
   padding-right: 16px;
-  padding-bottom: 10px;
+  margin-bottom: 10px;
+  margin-top: 10px;
 }
 
 .chips-weeks {
