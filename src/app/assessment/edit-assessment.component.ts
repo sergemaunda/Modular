@@ -62,7 +62,7 @@ import { noUndefined } from '@angular/compiler/src/util';
               <ion-item color="dark" detail="false" lines="full">
                   <ion-label position="floating">Description</ion-label>
                   <ion-textarea [(ngModel)]="assessment.description" (ionChange)="assessmentChange()"
-                  autoGrow rows="5" #textAreaId>
+                   rows="4" #textAreaId>
                   </ion-textarea>
               </ion-item>
           </ion-card-content>

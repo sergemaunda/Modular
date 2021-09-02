@@ -80,7 +80,7 @@ import { IonTextarea } from '@ionic/angular';
         </ion-item>
         <ion-item color="dark" detail="false" lines="full">
           <ion-label position="floating">Description</ion-label>
-          <ion-textarea autoGrow rows="5"
+          <ion-textarea rows="4"
               #textAreaId [(ngModel)]="description">
           </ion-textarea>
         </ion-item>
