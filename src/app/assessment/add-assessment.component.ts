@@ -7,101 +7,89 @@ import { IonTextarea } from '@ionic/angular';
 
 @Component({
     template: `
-    <!-- <ion-content color="dark">
-        <ion-grid class="center">
-            <ion-row>
-                <ion-col offset-lg="3" size-lg="6"> -->
-                      <div class="center-card">
-                        <div class="scroll-card">
-                        <ion-card color="dark">
-                            <ion-item color="warning" lines="none" detail="false">
-                                <ion-title>Assessment</ion-title>
-                                <ion-button (click)="cancel()" fill="clear" color="light" slot="end">
-                                    <h2><ion-icon name="close" slot="end"></ion-icon></h2>
-                                </ion-button>
-                            </ion-item>
-                            <ion-card-content>
-                                <ion-item class="item-select" lines="inset" detail="false" color="dark">
-                                    <ion-label>Module <ion-text *ngIf="moduleRequired" color="danger">*</ion-text></ion-label>
-                                    <ion-select [(ngModel)]="this.assessService.module" [interfaceOptions]="moduleSelectOptions"
-                                    interface="alert">
-                                        <ion-select-option *ngFor="let module of this.assessService.modules" [value]="module.code">
-                                            {{ module.code }}
-                                        </ion-select-option>
-                                    </ion-select>
-                                    <ion-button (click)="addModule()" fill="clear" color="light" size="default">
-                                        <ion-icon class="icon-size" color="warning" name="add-circle-outline"></ion-icon>
-                                    </ion-button>
-                                </ion-item>
-                                <ion-item lines="inset" detail="false" color="dark">
-                                    <ion-label>Type <ion-text *ngIf="typeRequired" color="danger">*</ion-text></ion-label>
-                                    <ion-select [(ngModel)]="this.assessService.type"
-                                    [interfaceOptions]="typeSelectOptions" interface="alert">
-                                        <ion-select-option *ngFor="let type of this.assessService.defaultTypes" [value]="type">
-                                            {{type.name}}
-                                        </ion-select-option>
-                                        <ion-select-option *ngFor="let type of this.assessService.types" [value]="type">
-                                            {{type.name}}
-                                        </ion-select-option>
-                                    </ion-select>
-                                    <ion-button (click)="addType()" fill="clear" color="light" size="default">
-                                        <ion-icon class="icon-size" color="warning" name="add-circle-outline"></ion-icon>
-                                    </ion-button>
-                                </ion-item>
-                                <div class="date-container">
-                                    <div style="flex-grow: 1">
-                                        <ion-item lines="inset" detail="false" color="dark">
-                                            <ion-label>Date</ion-label>
-                                            <ion-datetime [(ngModel)]="date.dateString" displayFormat="DD MMMM" pickerFormat="MMMM DD"
-                                                placeholder="Select date" (ionChange)="hasDate()">
-                                            </ion-datetime>
-                                        </ion-item>
-                                    </div>
-                                    <ion-button *ngIf="btnClrDate" (click)="clearDate()" fill="clear" color="light" size="default">
-                                        <ion-icon size="small" color="danger" name="close-circle-outline"></ion-icon>
-                                    </ion-button>
-                                </div>
-                                <div class="date-container">
-                                    <div style="flex-grow: 1">
-                                        <ion-item lines="inset" detail="false" color="dark">
-                                            <ion-label>Time</ion-label>
-                                            <ion-datetime [(ngModel)]="time.timeString" displayFormat="HH:mm" pickerFormat="HH:mm"
-                                                placeholder="Select time" (ionChange)="hasTime()">
-                                            </ion-datetime>
-                                        </ion-item>
-                                    </div>
-                                    <ion-button *ngIf="btnClrTime" (click)="clearTime()" fill="clear" color="light" size="default">
-                                        <ion-icon size="small" color="danger" name="close-circle-outline"></ion-icon>
-                                    </ion-button>
-                                </div>
-                                <ion-item lines="inset" detail="false" color="dark">
-                                    <ion-label>Title <ion-text *ngIf="titleRequired" color="danger">*</ion-text></ion-label>
-                                    <ion-input style="text-align: right" type="text" size="10"
-                                    placeholder="Enter title" [required]="titleRequired" [(ngModel)]="title"></ion-input>
-                                </ion-item>
-                                <ion-item lines="inset" detail="false" color="dark">
-                                    <ion-label>Location</ion-label>
-                                    <ion-input style="text-align: right" size="10" type="text"
-                                    placeholder="Enter location" [(ngModel)]="location"></ion-input>
-                                </ion-item>
-                                <ion-item color="dark" detail="false" lines="full">
-                                  <ion-label position="floating">Description</ion-label>
-                                  <ion-textarea autoGrow rows="4"
-                                      #textAreaId [(ngModel)]="description">
-                                  </ion-textarea>
-                                </ion-item>
-                            </ion-card-content>
+    <ion-content color="dark">
+    <ion-item color="warning" lines="none" detail="false">
+        <ion-title class="font-label">Assessment</ion-title>
+        <ion-button (click)="cancel()" fill="clear" color="light" slot="end">
+            <h2><ion-icon name="close" slot="end"></ion-icon></h2>
+        </ion-button>
+    </ion-item>
+    <ion-card-content>
+        <ion-item class="item-select" lines="inset" detail="false" color="dark">
+            <ion-label>Module <ion-text *ngIf="moduleRequired" color="danger">*</ion-text></ion-label>
+            <ion-select [(ngModel)]="this.assessService.module" [interfaceOptions]="moduleSelectOptions"
+            interface="alert">
+                <ion-select-option *ngFor="let module of this.assessService.modules" [value]="module.code">
+                    {{ module.code }}
+                </ion-select-option>
+            </ion-select>
+            <ion-button (click)="addModule()" fill="clear" color="light" size="default">
+                <ion-icon class="icon-size" color="warning" name="add-circle-outline"></ion-icon>
+            </ion-button>
+        </ion-item>
+        <ion-item lines="inset" detail="false" color="dark">
+            <ion-label>Type <ion-text *ngIf="typeRequired" color="danger">*</ion-text></ion-label>
+            <ion-select [(ngModel)]="this.assessService.type"
+            [interfaceOptions]="typeSelectOptions" interface="alert">
+                <ion-select-option *ngFor="let type of this.assessService.defaultTypes" [value]="type">
+                    {{type.name}}
+                </ion-select-option>
+                <ion-select-option *ngFor="let type of this.assessService.types" [value]="type">
+                    {{type.name}}
+                </ion-select-option>
+            </ion-select>
+            <ion-button (click)="addType()" fill="clear" color="light" size="default">
+                <ion-icon class="icon-size" color="warning" name="add-circle-outline"></ion-icon>
+            </ion-button>
+        </ion-item>
+        <div class="date-container">
+            <div style="flex-grow: 1">
+                <ion-item lines="inset" detail="false" color="dark">
+                    <ion-label>Date</ion-label>
+                    <ion-datetime [(ngModel)]="date.dateString" displayFormat="DD MMMM" pickerFormat="MMMM DD"
+                        placeholder="Select date" (ionChange)="hasDate()">
+                    </ion-datetime>
+                </ion-item>
+            </div>
+            <ion-button *ngIf="btnClrDate" (click)="clearDate()" fill="clear" color="light" size="default">
+                <ion-icon size="small" color="danger" name="close-circle-outline"></ion-icon>
+            </ion-button>
+        </div>
+        <div class="date-container">
+            <div style="flex-grow: 1">
+                <ion-item lines="inset" detail="false" color="dark">
+                    <ion-label>Time</ion-label>
+                    <ion-datetime [(ngModel)]="time.timeString" displayFormat="HH:mm" pickerFormat="HH:mm"
+                        placeholder="Select time" (ionChange)="hasTime()">
+                    </ion-datetime>
+                </ion-item>
+            </div>
+            <ion-button *ngIf="btnClrTime" (click)="clearTime()" fill="clear" color="light" size="default">
+                <ion-icon size="small" color="danger" name="close-circle-outline"></ion-icon>
+            </ion-button>
+        </div>
+        <ion-item lines="inset" detail="false" color="dark">
+            <ion-label>Title <ion-text *ngIf="titleRequired" color="danger">*</ion-text></ion-label>
+            <ion-input style="text-align: right" type="text" size="10"
+            placeholder="Enter title" [required]="titleRequired" [(ngModel)]="title"></ion-input>
+        </ion-item>
+        <ion-item lines="inset" detail="false" color="dark">
+            <ion-label>Location</ion-label>
+            <ion-input style="text-align: right" size="10" type="text"
+            placeholder="Enter location" [(ngModel)]="location"></ion-input>
+        </ion-item>
+        <ion-item color="dark" detail="false" lines="full">
+          <ion-label position="floating">Description</ion-label>
+          <ion-textarea autoGrow rows="5"
+              #textAreaId [(ngModel)]="description">
+          </ion-textarea>
+        </ion-item>
+    </ion-card-content>
 
-                            <ion-card-content>
-                                <ion-button [disabled]="disableButton" (click)="add()" color="warning" expand="block">Add</ion-button>
-                            </ion-card-content>
-                        </ion-card>
-                        <div>
-                      </div>
-                <!-- </ion-col>
-            </ion-row>
-        </ion-grid>
-  </ion-content> -->
+    <ion-card-content>
+        <ion-button [disabled]="disableButton" (click)="add()" color="warning" expand="block">Add</ion-button>
+    </ion-card-content>
+  </ion-content>
     `,
 
     styleUrls: ['./assessment.page.scss']

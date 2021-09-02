@@ -9,6 +9,13 @@
 }
 
 @font-face {
+  font-family: 'Bowlby One SC';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Bowlby One SC Regular'), url("../../assets/fonts/Bowlby_One_SC/BowlbyOneSC-Regular.ttf") format("truetype");
+}
+
+@font-face {
   font-family: 'Fjalla One', sans-serif;
   src: local("Fjalla One"), url("../../assets/fonts/FjallaOne/FjallaOne-Regular.ttf") format("truetype");
 }
@@ -43,11 +50,29 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: 60%;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+}
+
+.img-size {
+  height: 60%;
+  width: 60%;
 }
 
 .font-week {
   font-family: "Lobster";
   font-size: 24px;
+}
+
+.font-months {
+  font-family: 'Bowlby One SC';
+  font-size: 26px;
+}
+
+.font-label {
+  font-family: 'Bowlby One SC';
+  font-size: 20px;
 }
 
 .font-day {
@@ -191,7 +216,7 @@
 
 .img {
   margin: 10px;
-  width: 15%;
+  width: 12%;
 }
 
 .item-to_be_confirmed {
