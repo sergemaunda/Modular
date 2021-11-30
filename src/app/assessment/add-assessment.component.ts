@@ -8,95 +8,87 @@ import { IonTextarea } from '@ionic/angular';
 @Component({
     template: `
     <ion-content color="dark">
-        <ion-grid class="center">
-            <ion-row>
-                <ion-col offset-lg="3" size-lg="6">
-                        <ion-card color="dark">
-                            <ion-item color="warning" lines="none" detail="false">
-                                <ion-title>Assessment</ion-title>
-                                <ion-button (click)="cancel()" fill="clear" color="light" slot="end">
-                                    <h2><ion-icon name="close" slot="end"></ion-icon></h2>
-                                </ion-button>
-                            </ion-item>
-                            <ion-card-content>
-                                <ion-item class="item-select" lines="inset" detail="false" color="dark">
-                                    <ion-label>Module <ion-text *ngIf="moduleRequired" color="danger">*</ion-text></ion-label>
-                                    <ion-select [(ngModel)]="this.assessService.module" [interfaceOptions]="moduleSelectOptions"
-                                    interface="alert">
-                                        <ion-select-option *ngFor="let module of this.assessService.modules" [value]="module.code">
-                                            {{ module.code }}
-                                        </ion-select-option>
-                                    </ion-select>
-                                    <ion-button (click)="addModule()" fill="clear" color="light" size="default">
-                                        <ion-icon class="icon-size" color="warning" name="add-circle-outline"></ion-icon>
-                                    </ion-button>
-                                </ion-item>
-                                <ion-item lines="inset" detail="false" color="dark">
-                                    <ion-label>Type <ion-text *ngIf="typeRequired" color="danger">*</ion-text></ion-label>
-                                    <ion-select [(ngModel)]="this.assessService.type"
-                                    [interfaceOptions]="typeSelectOptions" interface="alert">
-                                        <ion-select-option *ngFor="let type of this.assessService.defaultTypes" [value]="type">
-                                            {{type.name}}
-                                        </ion-select-option>
-                                        <ion-select-option *ngFor="let type of this.assessService.types" [value]="type">
-                                            {{type.name}}
-                                        </ion-select-option>
-                                    </ion-select>
-                                    <ion-button (click)="addType()" fill="clear" color="light" size="default">
-                                        <ion-icon class="icon-size" color="warning" name="add-circle-outline"></ion-icon>
-                                    </ion-button>
-                                </ion-item>
-                                <div class="date-container">
-                                    <div style="flex-grow: 1">
-                                        <ion-item lines="inset" detail="false" color="dark">
-                                            <ion-label>Date</ion-label>
-                                            <ion-datetime [(ngModel)]="date.dateString" displayFormat="DD MMMM" pickerFormat="MMMM DD"
-                                                placeholder="Select date" (ionChange)="hasDate()">
-                                            </ion-datetime>
-                                        </ion-item>
-                                    </div>
-                                    <ion-button *ngIf="btnClrDate" (click)="clearDate()" fill="clear" color="light" size="default">
-                                        <ion-icon size="small" color="danger" name="close-circle-outline"></ion-icon>
-                                    </ion-button>
-                                </div>
-                                <div class="date-container">
-                                    <div style="flex-grow: 1">
-                                        <ion-item lines="inset" detail="false" color="dark">
-                                            <ion-label>Time</ion-label>
-                                            <ion-datetime [(ngModel)]="time.timeString" displayFormat="HH:mm" pickerFormat="HH:mm"
-                                                placeholder="Select time" (ionChange)="hasTime()">
-                                            </ion-datetime>
-                                        </ion-item>
-                                    </div>
-                                    <ion-button *ngIf="btnClrTime" (click)="clearTime()" fill="clear" color="light" size="default">
-                                        <ion-icon size="small" color="danger" name="close-circle-outline"></ion-icon>
-                                    </ion-button>
-                                </div>
-                                <ion-item lines="inset" detail="false" color="dark">
-                                    <ion-label>Title <ion-text *ngIf="titleRequired" color="danger">*</ion-text></ion-label>
-                                    <ion-input style="text-align: right" type="text" size="10"
-                                    placeholder="Enter title" [required]="titleRequired" [(ngModel)]="title"></ion-input>
-                                </ion-item>
-                                <ion-item lines="inset" detail="false" color="dark">
-                                    <ion-label>Location</ion-label>
-                                    <ion-input style="text-align: right" size="10" type="text"
-                                    placeholder="Enter location" [(ngModel)]="location"></ion-input>
-                                </ion-item>
-                                <ion-item color="dark" detail="false" lines="full">
-                                    <ion-label position="floating">Description</ion-label>
-                                    <ion-textarea
-                                        #textAreaId [(ngModel)]="description">
-                                    </ion-textarea>
-                                </ion-item>
-                            </ion-card-content>
+    <ion-item color="warning" lines="none" detail="false">
+        <ion-title>Assessment</ion-title>
+        <ion-button (click)="cancel()" fill="clear" color="light" slot="end">
+            <h2><ion-icon name="close" slot="end"></ion-icon></h2>
+        </ion-button>
+    </ion-item>
+    <ion-card-content>
+        <ion-item class="item-select" lines="inset" detail="false" color="dark">
+            <ion-label>Module <ion-text *ngIf="moduleRequired" color="danger">*</ion-text></ion-label>
+            <ion-select [(ngModel)]="this.assessService.module" [interfaceOptions]="moduleSelectOptions"
+            interface="alert">
+                <ion-select-option *ngFor="let module of this.assessService.modules" [value]="module.code">
+                    {{ module.code }}
+                </ion-select-option>
+            </ion-select>
+            <ion-button (click)="addModule()" fill="clear" color="light" size="default">
+                <ion-icon class="icon-size" color="warning" name="add-circle-outline"></ion-icon>
+            </ion-button>
+        </ion-item>
+        <ion-item lines="inset" detail="false" color="dark">
+            <ion-label>Type <ion-text *ngIf="typeRequired" color="danger">*</ion-text></ion-label>
+            <ion-select [(ngModel)]="this.assessService.type"
+            [interfaceOptions]="typeSelectOptions" interface="alert">
+                <ion-select-option *ngFor="let type of this.assessService.defaultTypes" [value]="type">
+                    {{type.name}}
+                </ion-select-option>
+                <ion-select-option *ngFor="let type of this.assessService.types" [value]="type">
+                    {{type.name}}
+                </ion-select-option>
+            </ion-select>
+            <ion-button (click)="addType()" fill="clear" color="light" size="default">
+                <ion-icon class="icon-size" color="warning" name="add-circle-outline"></ion-icon>
+            </ion-button>
+        </ion-item>
+        <div class="date-container">
+            <div style="flex-grow: 1">
+                <ion-item lines="inset" detail="false" color="dark">
+                    <ion-label>Date</ion-label>
+                    <ion-datetime [(ngModel)]="date.dateString" displayFormat="DD MMMM" pickerFormat="MMMM DD"
+                        placeholder="Select date" (ionChange)="hasDate()">
+                    </ion-datetime>
+                </ion-item>
+            </div>
+            <ion-button *ngIf="btnClrDate" (click)="clearDate()" fill="clear" color="light" size="default">
+                <ion-icon size="small" color="danger" name="close-circle-outline"></ion-icon>
+            </ion-button>
+        </div>
+        <div class="date-container">
+            <div style="flex-grow: 1">
+                <ion-item lines="inset" detail="false" color="dark">
+                    <ion-label>Time</ion-label>
+                    <ion-datetime [(ngModel)]="time.timeString" displayFormat="HH:mm" pickerFormat="HH:mm"
+                        placeholder="Select time" (ionChange)="hasTime()">
+                    </ion-datetime>
+                </ion-item>
+            </div>
+            <ion-button *ngIf="btnClrTime" (click)="clearTime()" fill="clear" color="light" size="default">
+                <ion-icon size="small" color="danger" name="close-circle-outline"></ion-icon>
+            </ion-button>
+        </div>
+        <ion-item lines="inset" detail="false" color="dark">
+            <ion-label>Title <ion-text *ngIf="titleRequired" color="danger">*</ion-text></ion-label>
+            <ion-input style="text-align: right" type="text" size="10"
+            placeholder="Enter title" [required]="titleRequired" [(ngModel)]="title"></ion-input>
+        </ion-item>
+        <ion-item lines="inset" detail="false" color="dark">
+            <ion-label>Location</ion-label>
+            <ion-input style="text-align: right" size="10" type="text"
+            placeholder="Enter location" [(ngModel)]="location"></ion-input>
+        </ion-item>
+        <ion-item color="dark" detail="false" lines="full">
+          <ion-label position="floating">Description</ion-label>
+          <ion-textarea rows="4"
+              #textAreaId [(ngModel)]="description">
+          </ion-textarea>
+        </ion-item>
+    </ion-card-content>
 
-                            <ion-card-content>
-                                <ion-button [disabled]="disableButton" (click)="add()" color="warning" expand="block">Add</ion-button>
-                            </ion-card-content>
-                        </ion-card>
-                </ion-col>
-            </ion-row>
-        </ion-grid>
+    <ion-card-content>
+        <ion-button [disabled]="disableButton" (click)="add()" color="warning" expand="block">Add</ion-button>
+    </ion-card-content>
   </ion-content>
     `,
 
@@ -179,6 +171,7 @@ export class AddAssessmentComponent implements OnInit {
             this.date.monthColor = this.assessService.getMonth(this.date.dateString).color;
             this.date.monthHexColor = this.assessService.getMonth(this.date.dateString).hexColor;
             this.date.year = this.assessService.getYear(this.date.dateString);
+            this.time.timezone = this.assessService.getTimezone(this.date.dateString);
             DATE.setFullYear(parseInt(this.date.year, 10), parseInt(this.date.monthNo, 10) - 1, parseInt(this.date.day, 10));
 
             this.date.weekdayNo = DATE.getDay();
@@ -188,7 +181,6 @@ export class AddAssessmentComponent implements OnInit {
     setTime() {
             this.time.minute = this.assessService.getMinute(this.time.timeString);
             this.time.hour = this.assessService.getHour(this.time.timeString);
-            this.time.timezone = this.assessService.getTimezone(this.time.timeString);
     }
 
     setNotifications(assessment: any): any{
@@ -198,14 +190,14 @@ export class AddAssessmentComponent implements OnInit {
       const today = new Date();
       const timeNow = today.getTime();
       const timeMilliseconds = this.assessService.getMilliseconds(parseInt(assessment.time.hour, 10), parseInt(assessment.time.minute, 10));
-      const time = assessment.time.hasTime ? timeMilliseconds:0;
-      const date = (assessment.dueDate - time) + (hour*8); // notifications will appear at 08h00
+      const time = assessment.time.hasTime ? timeMilliseconds:(day - 1);
+      const date = (assessment.dueDate - time); // notifications will appear at 00h00
       const noOfNotifications = assessment.time.hasTime ? 6:5;
       const notifications = [];
 
       const body = [assessment.title + ' due next week! Start preparing.',
-      assessment.title + ' due soon! Open up those books and get to studying.',
-      assessment.title + ' due in 3 days! Study! Study! Study!',
+      assessment.title + ' due soon! Open up those books and study.',
+      assessment.title + ' due in a few days! Study! Study! Study!',
       assessment.title + ' due tomorrow! Hope you ready.',
       assessment.title + ' due today! Goodluck, you got this.',
       assessment.title + ' due in 1 hour!'];
@@ -221,9 +213,11 @@ export class AddAssessmentComponent implements OnInit {
       for (let i = 0; i < noOfNotifications; ++i) {
         const notification = {
           id: undefined,
-          title: assessment.module,
+          title: assessment.module + ' - ' + assessment.type.name,
           body: body[i],
-          schedule: {at: new Date(schedule[i])}
+          schedule: {at: new Date(schedule[i])},
+          iconColor: '#ffc409',
+          smallIcon: 'icon'
         };
         notifications.push(notification);
       };
@@ -286,20 +280,22 @@ export class AddAssessmentComponent implements OnInit {
                 }
 
                 if (!(this.date.dateString === '') && (this.time.timeString === '')) {
+                    const DAY = 86399999;
                     this.setDate();
                     hasDate = true;
-                    DUE_DATE = Date.UTC(parseInt(this.date.year, 10), parseInt(this.date.monthNo, 10) - 1, parseInt(this.date.day, 10));
+                    DUE_DATE = Date.UTC(parseInt(this.date.year, 10), parseInt(this.date.monthNo, 10) - 1, parseInt(this.date.day, 10))
+                    + DAY + this.time.timezone;
                 }
 
                 const DATE = DUE_DATE - Date.now();
 
                 if (DATE >= 0) {
-                    const DAY = 86340000;
-                    const WEEK = 604740000;
+                    const DAY = 86399999;
+                    const WEEK = 604799999;
                     const TODAY = new Date();
                     const TIME_GONE_IN_DAY = this.assessService.getMilliseconds(TODAY.getHours(), TODAY.getMinutes());
                     const TIME_GONE_IN_WEEK = (DAY * (TODAY.getDay())) + TIME_GONE_IN_DAY;
-                    const currentMonth = this.assessService.getUTCMonth(TODAY.getMonth());
+                    const currentMonth = this.assessService.getUTCMonth(TODAY.getMonth()).month;
 
                     const assessment = {
                         id: undefined,

@@ -4,32 +4,22 @@ import { AssessmentService } from './assessment.service';
 @Component({
     template: `
     <ion-content color="dark">
-        <div class="center">
-            <ion-grid>
-                <ion-row>
-                    <ion-col offset-lg="3" size-lg="6">
-                        <ion-card color="dark">
-                            <ion-item color="warning" lines="none" detail="false">
-                                <ion-title  class="ion-text-wrap">Type</ion-title>
-                                <ion-button (click)="cancel()" fill="clear" color="light" slot="end">
-                                    <h2><ion-icon name="close" slot="end"></ion-icon></h2>
-                                </ion-button>
-                            </ion-item>
+      <ion-item color="warning" lines="none" detail="false">
+          <ion-title  class="ion-text-wrap">Type</ion-title>
+          <ion-button (click)="cancel()" fill="clear" color="light" slot="end">
+              <h2><ion-icon name="close" slot="end"></ion-icon></h2>
+          </ion-button>
+      </ion-item>
 
-                            <ion-card-content>
-                                <ion-item lines="inset" detail="false" color="dark">
-                                    <ion-label position="floating">Name</ion-label>
-                                    <ion-input [(ngModel)]="type.name" type="text" maxlength="20" (ionChange)="typeChange()"></ion-input>
-                                </ion-item>
-                            </ion-card-content>
-                            <ion-card-content>
-                                <ion-button [disabled]="disableButton" (click)="save()" color="warning" expand="block">Save</ion-button>
-                            </ion-card-content>
-                        </ion-card>
-                    </ion-col>
-                </ion-row>
-            </ion-grid>
-        </div>
+      <ion-card-content>
+          <ion-item lines="inset" detail="false" color="dark">
+              <ion-label position="floating">Name</ion-label>
+              <ion-input [(ngModel)]="type.name" type="text" maxlength="20" (ionChange)="typeChange()"></ion-input>
+          </ion-item>
+      </ion-card-content>
+      <ion-card-content>
+          <ion-button [disabled]="disableButton" (click)="save()" color="warning" expand="block">Save</ion-button>
+      </ion-card-content>
     </ion-content>
     `,
 

@@ -9,6 +9,13 @@
 }
 
 @font-face {
+  font-family: 'Bowlby One SC';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Bowlby One SC Regular'), url("../../assets/fonts/Bowlby_One_SC/BowlbyOneSC-Regular.ttf") format("truetype");
+}
+
+@font-face {
   font-family: 'Fjalla One', sans-serif;
   src: local("Fjalla One"), url("../../assets/fonts/FjallaOne/FjallaOne-Regular.ttf") format("truetype");
 }
@@ -25,17 +32,47 @@
   transform: translate(-50%, -50%);
 }
 
+.center-card {
+  overflow-y: auto;
+}
+
+.scroll-card {
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #222428;
+}
+
 .img-assessments {
   position: relative;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 60%;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+}
+
+.img-size {
+  height: 60%;
+  width: 60%;
 }
 
 .font-week {
   font-family: "Lobster";
   font-size: 24px;
+}
+
+.font-months {
+  font-family: 'Bowlby One SC';
+  font-size: 26px;
+}
+
+.font-label {
+  font-family: 'Bowlby One SC';
+  font-size: 20px;
 }
 
 .font-day {
@@ -58,7 +95,7 @@
 }
 
 .week-card {
-  margin-top: 30px;
+  margin-bottom: 30px;
 }
 
 .content-padding {
@@ -159,7 +196,8 @@
   background: #222428;
   padding-left: 16px;
   padding-right: 16px;
-  padding-bottom: 10px;
+  margin-bottom: 10px;
+  margin-top: 10px;
 }
 
 .chips-weeks {
@@ -178,7 +216,7 @@
 
 .img {
   margin: 10px;
-  width: 15%;
+  width: 12%;
 }
 
 .item-to_be_confirmed {

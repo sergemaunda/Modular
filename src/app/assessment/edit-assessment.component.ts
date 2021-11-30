@@ -6,80 +6,70 @@ import { noUndefined } from '@angular/compiler/src/util';
 @Component({
     template: `
     <ion-content color="dark">
-        <div class="center">
-            <ion-grid>
-                <ion-row>
-                    <ion-col offset-lg="3" size-lg="6">
-                        <ion-card color="dark">
-                            <ion-item color="warning" lines="none" detail="false">
-                                <ion-title>Assessment</ion-title>
-                                <ion-button (click)="cancel()" fill="clear" color="light" slot="end">
-                                    <h2><ion-icon name="close" slot="end"></ion-icon></h2>
-                                </ion-button>
-                            </ion-item>
-                            <ion-card-content>
-                                <ion-item lines="inset" detail="false" color="dark">
-                                    <ion-label>Module</ion-label>
-                                    <ion-input disabled="true" style="text-align: right" [(ngModel)]="assessment.module"></ion-input>
-                                </ion-item>
-                                <ion-item lines="inset" detail="false" color="dark">
-                                    <ion-label>Type</ion-label>
-                                    <ion-input  disabled="true" style="text-align: right" [(ngModel)]="assessment.type.name"></ion-input>
-                                </ion-item>
-                                <div class="date-container">
-                                    <div style="flex-grow: 1">
-                                        <ion-item lines="inset" detail="false" color="dark">
-                                            <ion-label>Date</ion-label>
-                                            <ion-datetime [(ngModel)]="assessment.rawDate" displayFormat="DD MMMM" pickerFormat="MMMM DD"
-                                                placeholder="Select date" (ionChange)="hasDate(); assessmentChange()">
-                                            </ion-datetime>
-                                        </ion-item>
-                                    </div>
-                                    <ion-button *ngIf="btnClrDate" (click)="clearDate()" fill="clear" color="light" size="default">
-                                        <ion-icon size="small" color="danger" name="close-circle-outline"></ion-icon>
-                                    </ion-button>
-                                </div>
-                                <div class="date-container">
-                                    <div style="flex-grow: 1">
-                                        <ion-item lines="inset" detail="false" color="dark">
-                                            <ion-label>Time</ion-label>
-                                            <ion-datetime [(ngModel)]="assessment.rawTime" displayFormat="HH:mm" pickerFormat="HH:mm"
-                                                placeholder="Select time" (ionChange)="hasTime(); assessmentChange()">
-                                            </ion-datetime>
-                                        </ion-item>
-                                    </div>
-                                    <ion-button *ngIf="btnClrTime" (click)="clearTime()" fill="clear" color="light" size="default">
-                                        <ion-icon size="small" color="danger" name="close-circle-outline"></ion-icon>
-                                    </ion-button>
-                                </div>
-                                <ion-item lines="inset" detail="false" color="dark">
-                                    <ion-label>Title <ion-text *ngIf="titleRequired" color="danger">*</ion-text></ion-label>
-                                    <ion-input style="text-align: right" size="10" type="text"
-                                    placeholder="Enter title" [required]="titleRequired"  [(ngModel)]="assessment.title"
-                                     (ionChange)="assessmentChange()"></ion-input>
-                                </ion-item>
-                                <ion-item lines="inset" detail="false" color="dark">
-                                    <ion-label>Location</ion-label>
-                                    <ion-input style="text-align: right" size="10" type="text"
-                                    placeholder="Enter location" [(ngModel)]="assessment.location"
-                                    (ionChange)="assessmentChange()"></ion-input>
-                                </ion-item>
-                                <ion-item color="dark" detail="false" lines="full">
-                                    <ion-label position="floating">Description</ion-label>
-                                    <ion-textarea [(ngModel)]="assessment.description" (ionChange)="assessmentChange()" #textAreaId>
-                                    </ion-textarea>
-                                </ion-item>
-                            </ion-card-content>
+          <ion-item color="warning" lines="none" detail="false">
+              <ion-title>Assessment</ion-title>
+              <ion-button (click)="cancel()" fill="clear" color="light" slot="end">
+                  <h2><ion-icon name="close" slot="end"></ion-icon></h2>
+              </ion-button>
+          </ion-item>
+          <ion-card-content>
+              <ion-item lines="inset" detail="false" color="dark">
+                  <ion-label>Module</ion-label>
+                  <ion-input disabled="true" style="text-align: right" [(ngModel)]="assessment.module"></ion-input>
+              </ion-item>
+              <ion-item lines="inset" detail="false" color="dark">
+                  <ion-label>Type</ion-label>
+                  <ion-input  disabled="true" style="text-align: right" [(ngModel)]="assessment.type.name"></ion-input>
+              </ion-item>
+              <div class="date-container">
+                  <div style="flex-grow: 1">
+                      <ion-item lines="inset" detail="false" color="dark">
+                          <ion-label>Date</ion-label>
+                          <ion-datetime [(ngModel)]="assessment.rawDate" displayFormat="DD MMMM" pickerFormat="MMMM DD"
+                              placeholder="Select date" (ionChange)="hasDate(); assessmentChange()">
+                          </ion-datetime>
+                      </ion-item>
+                  </div>
+                  <ion-button *ngIf="btnClrDate" (click)="clearDate()" fill="clear" color="light" size="default">
+                      <ion-icon size="small" color="danger" name="close-circle-outline"></ion-icon>
+                  </ion-button>
+              </div>
+              <div class="date-container">
+                  <div style="flex-grow: 1">
+                      <ion-item lines="inset" detail="false" color="dark">
+                          <ion-label>Time</ion-label>
+                          <ion-datetime [(ngModel)]="assessment.rawTime" displayFormat="HH:mm" pickerFormat="HH:mm"
+                              placeholder="Select time" (ionChange)="hasTime(); assessmentChange()">
+                          </ion-datetime>
+                      </ion-item>
+                  </div>
+                  <ion-button *ngIf="btnClrTime" (click)="clearTime()" fill="clear" color="light" size="default">
+                      <ion-icon size="small" color="danger" name="close-circle-outline"></ion-icon>
+                  </ion-button>
+              </div>
+              <ion-item lines="inset" detail="false" color="dark">
+                  <ion-label>Title <ion-text *ngIf="titleRequired" color="danger">*</ion-text></ion-label>
+                  <ion-input style="text-align: right" size="10" type="text"
+                  placeholder="Enter title" [required]="titleRequired"  [(ngModel)]="assessment.title"
+                    (ionChange)="assessmentChange()"></ion-input>
+              </ion-item>
+              <ion-item lines="inset" detail="false" color="dark">
+                  <ion-label>Location</ion-label>
+                  <ion-input style="text-align: right" size="10" type="text"
+                  placeholder="Enter location" [(ngModel)]="assessment.location"
+                  (ionChange)="assessmentChange()"></ion-input>
+              </ion-item>
+              <ion-item color="dark" detail="false" lines="full">
+                  <ion-label position="floating">Description</ion-label>
+                  <ion-textarea [(ngModel)]="assessment.description" (ionChange)="assessmentChange()"
+                   rows="4" #textAreaId>
+                  </ion-textarea>
+              </ion-item>
+          </ion-card-content>
 
-                            <ion-card-content>
-                                <ion-button [disabled]="disableButton" (click)="save()" color="warning" expand="block">Save</ion-button>
-                            </ion-card-content>
-                        </ion-card>
-                    </ion-col>
-                </ion-row>
-            </ion-grid>
-        </div>
-
+          <ion-card-content>
+              <ion-button [disabled]="disableButton" (click)="save()" color="warning" expand="block">Save</ion-button>
+          </ion-card-content>
     </ion-content>
     `,
 
@@ -160,6 +150,7 @@ export class EditAssessmentComponent implements OnInit {
       this.savedDate.monthColor = this.assessService.getMonth(this.assessment.rawDate).color;
       this.savedDate.monthHexColor = this.assessService.getMonth(this.assessment.rawDate).hexColor;
       this.savedDate.year = this.assessService.getYear(this.assessment.rawDate);
+      this.savedTime.timezone = this.assessService.getTimezone(this.assessment.rawDate);
       DATE.setFullYear(parseInt(this.savedDate.year, 10), parseInt(this.savedDate.monthNo, 10) - 1, parseInt(this.savedDate.day, 10));
       this.savedDate.weekdayNo = DATE.getDay();
       this.savedDate.weekday = this.assessService.getWeekday(DATE.getDay());
@@ -168,7 +159,6 @@ export class EditAssessmentComponent implements OnInit {
     setTime() {
       this.savedTime.minute = this.assessService.getMinute(this.assessment.rawTime);
       this.savedTime.hour = this.assessService.getHour(this.assessment.rawTime);
-      this.savedTime.timezone = this.assessService.getTimezone(this.assessment.rawTime);
     }
 
     setNotifications(assessment: any): any{
@@ -178,14 +168,14 @@ export class EditAssessmentComponent implements OnInit {
       const today = new Date();
       const timeNow = today.getTime();
       const timeMilliseconds = this.assessService.getMilliseconds(parseInt(assessment.time.hour, 10), parseInt(assessment.time.minute, 10));
-      const time = assessment.time.hasTime ? timeMilliseconds:0;
-      const date = (assessment.dueDate - time) + (hour*8); // notifications will appear at 08h00
+      const time = assessment.time.hasTime ? timeMilliseconds:(day - 1);
+      const date = (assessment.dueDate - time); // notifications will appear at 08h00
       const noOfNotifications = assessment.time.hasTime ? 6:5;
       const notifications = [];
 
       const body = [assessment.title + ' due next week! Start preparing.',
-      assessment.title + ' due soon! Open up those books and get to studying.',
-      assessment.title + ' due in 3 days! Study! Study! Study!',
+      assessment.title + ' due soon! Open up those books and study.',
+      assessment.title + ' due in a few days! Study! Study! Study!',
       assessment.title + ' due tomorrow! Hope you ready.',
       assessment.title + ' due today! Goodluck, you got this.',
       assessment.title + ' due in 1 hour!'];
@@ -201,9 +191,11 @@ export class EditAssessmentComponent implements OnInit {
       for (let i = 0; i < noOfNotifications; ++i) {
         const notification = {
           id: undefined,
-          title: assessment.module,
+          title: assessment.module + ' - ' + assessment.type.name,
           body: body[i],
-          schedule: {at: new Date(schedule[i])}
+          schedule: {at: new Date(schedule[i])},
+          iconColor: '#ffc409',
+          smallIcon: 'icon'
         };
         notifications.push(notification);
       };
@@ -280,25 +272,25 @@ export class EditAssessmentComponent implements OnInit {
                 }
 
                 if (!(this.assessment.rawDate === '') && (this.assessment.rawTime === '')) {
+                    const DAY = 86399999;
                     this.setDate();
                     this.savedDate.hasDate = true;
                     this.savedTime.hasTime = false;
                     this.savedTime.minute = '';
                     this.savedTime.hour = '';
-                    this.savedTime.timezone = 0;
                     DUE_DATE = Date.UTC(parseInt(this.savedDate.year, 10), parseInt(this.savedDate.monthNo, 10) - 1,
-                                            parseInt(this.savedDate.day, 10)) + this.savedTime.timezone;
+                                            parseInt(this.savedDate.day, 10)) + DAY + this.savedTime.timezone;
                 }
 
                 const DATE = DUE_DATE - Date.now();
 
                 if (DATE >= 0) {
-                    const DAY = 86340000;
-                    const WEEK = 604740000;
+                    const DAY = 86399999;
+                    const WEEK = 604799999;
                     const TODAY = new Date();
                     const TIME_GONE_IN_DAY = this.assessService.getMilliseconds(TODAY.getHours(), TODAY.getMinutes());
                     const TIME_GONE_IN_WEEK = (DAY * (TODAY.getDay())) + TIME_GONE_IN_DAY;
-                    const currentMonth = this.assessService.getUTCMonth(TODAY.getMonth());
+                    const currentMonth = this.assessService.getUTCMonth(TODAY.getMonth()).month;
 
                     const assessment = {
                         id: undefined,

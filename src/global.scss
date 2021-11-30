@@ -59,10 +59,12 @@
 
 .action-sheet-background .action-sheet-group {
   --background: #222428;
+  --color: white;
 }
 
-.options-btn .action-sheet-icon {
+.options-btn {
   --color: white;
+  color: white !important;
 }
 
 .alert .alert-wrapper {

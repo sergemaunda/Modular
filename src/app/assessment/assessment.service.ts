@@ -19,6 +19,7 @@ export class AssessmentService {
   editTBCAssessmentId = {week: NaN, assessmentId: NaN};
   editMonthAssessmentId = {monthId: NaN, assessmentId: NaN};
   iconFltr = {name: '', icon: 'funnel-outline', color: 'light', isFilter: false};
+  dateRanges = [];
 
   //"isFirstFilter" is used to determine if the filter selected is the first filter
   //so as to not remove any non-existent "previous filter"
@@ -37,21 +38,25 @@ export class AssessmentService {
     {
       id: 0,
       period: 'To be confirmed',
+      showAssessments: {status: true, icon: 'chevron-up-circle-outline'},
       assessment: []
     },
     {
       id: 1,
       period: 'This week',
+      showAssessments: {status: false, icon: 'chevron-down-circle-outline'},
       assessment: []
     },
     {
       id: 2,
       period: 'Next week',
+      showAssessments: {status: false, icon: 'chevron-down-circle-outline'},
       assessment: []
     },
     {
       id: 3,
       period: 'Upcoming weeks',
+      showAssessments: {status: false, icon: 'chevron-down-circle-outline'},
       assessment: []
     },
   ];
@@ -81,7 +86,37 @@ export class AssessmentService {
               public  modalCtrl: ModalController,
               ) {
   }
-// localnotifs -  60, today - 03h00, tommorow - 09h00, week, month
+
+  setDateRanges() {
+    // clear date ranges
+    this.dateRanges.splice(0, this.dateRanges.length);
+
+    const today = new Date();
+    const day = 86400000;
+    const week = 604800000;
+    const daysGone = today.getDay();
+    const daysLeft = 6 - daysGone;
+    const timeGone = this.getMilliseconds(today.getHours(), today.getMinutes());
+    const firstDay = (today.getTime() - timeGone) - daysGone * day;
+    const lastDay = (today.getTime() - timeGone) + daysLeft * day;
+
+    for (let i=0; i<3; ++i) {
+      const thatFirstDay = new Date(firstDay + i*week);
+      this.dateRanges.push(thatFirstDay.getDate().toString() + ' ' + this.getUTCMonth(thatFirstDay.getMonth()).month.toUpperCase());
+
+      const thatLastDay = new Date(lastDay + i*week);
+      this.dateRanges.push(thatLastDay.getDate().toString() + ' ' + this.getUTCMonth(thatLastDay.getMonth()).month.toUpperCase());
+
+      if ((i === 2) && (today.getMonth() === thatLastDay.getMonth())) {
+        this.dateRanges[5] = this.getUTCMonth(today.getMonth()).lastDay + ' ' + this.getUTCMonth(today.getMonth()).month.toUpperCase();
+      }
+    }
+
+    console.log(this.dateRanges[0] + ' - ' + this.dateRanges[1]);
+    console.log(this.dateRanges[2] + ' - ' + this.dateRanges[3]);
+    console.log(this.dateRanges[4] + ' - ' + this.dateRanges[5]);
+  }
+
 
   setLocalNotifications(notifications: any) {
     LocalNotifications.schedule({notifications});
@@ -108,7 +143,7 @@ export class AssessmentService {
   async assessOnInit() {
     await this.storage.create();
     const today = new Date();
-    const currentMonth = this.getUTCMonth(today.getMonth());
+    const currentMonth = this.getUTCMonth(today.getMonth()).month;
 
     let keys = [];
     await this.storage.keys()
@@ -144,6 +179,8 @@ export class AssessmentService {
     }
 
     this.permMonthAssessments.forEach((month) => {
+      month.showMonths = {status: false, icon: 'chevron-down-circle-outline'};
+
       month.assessment.forEach((assessment) => {
         assessment.showDetails = {status: false, icon: 'chevron-down'};
       });
@@ -177,6 +214,7 @@ export class AssessmentService {
     this.deleteWeekAssessment(oldAssessmentIDs, initialID, 'currentMonth');
     this.configLocalNotifications();
     this.setLocalNotifications(this.notifications);
+    this.setDateRanges();
     console.log(this.currentMonthAssessments);
     console.log(this.notifications);
   }
@@ -248,9 +286,9 @@ export class AssessmentService {
   }
 
   setWeekAssessments(assessment, dueDate: number) {
-    const DAY = 86340000; // 1 minute (60000 ms) offset => 23h59
-    const TOMORROW = 172740000; // 1 minute (60000 ms) offset => 23h59
-    const WEEK = 604740000;
+    const DAY = 86399999;
+    const TOMORROW = 172799999;
+    const WEEK = 604799999;
     const PERIOD = dueDate - Date.now();
     const TODAY = new Date();
     const DATE = new Date();
@@ -682,32 +720,32 @@ export class AssessmentService {
     }
   }
 
-  getUTCMonth(month: number): string {
+  getUTCMonth(month: number, year?: number): {month: string; lastDay: string } {
     switch (month) {
         case 0:
-          return 'January';
+          return {month: 'January', lastDay: '31'};
         case 1:
-          return'February';
+          return {month: 'February', lastDay: (year % 4 === 0) ? '29': '28'};
         case 2:
-          return 'March';
+          return {month: 'March', lastDay: '31'};
         case 3:
-          return 'April';
+          return {month: 'April', lastDay: '30'};
         case 4:
-          return 'May';
+          return {month: 'May', lastDay: '31'};
         case 5:
-          return 'June';
+          return {month: 'June', lastDay: '30'};
         case 6:
-          return 'July';
+          return {month: 'July', lastDay: '31'};
         case 7:
-          return 'August';
+          return {month: 'August', lastDay: '31'};
         case 8:
-          return 'September';
+          return {month: 'September', lastDay: '30'};
         case 9:
-          return 'October';
+          return {month: 'October', lastDay: '31'};
         case 10:
-          return 'November';
+          return {month: 'November', lastDay: '30'};
         case 11:
-          return 'December';
+          return {month: 'December', lastDay: '31'};
     }
   }
 
@@ -722,6 +760,7 @@ export class AssessmentService {
       sortID: this.getMonthSortID(name),
       month: name,
       monthSvg: this.getMonthSvg(name),
+      showMonths: {status: true, icon: 'chevron-up-circle-outline'},
       assessment: []
     });
     assessments.sort((a: any, b: any) => a.sortID - b.sortID);
