@@ -5,7 +5,7 @@ import { AssessmentService } from './assessment.service';
     template: `
     <ion-content color="dark">
       <ion-item color="warning" lines="none" detail="false">
-          <ion-title  class="ion-text-wrap" class="font-label">Type</ion-title>
+          <ion-title  class="ion-text-wrap">Type</ion-title>
           <ion-button (click)="cancel()" fill="clear" color="light" slot="end">
               <h2><ion-icon name="close" slot="end"></ion-icon></h2>
           </ion-button>

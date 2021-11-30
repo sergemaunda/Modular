@@ -7,7 +7,7 @@ import { noUndefined } from '@angular/compiler/src/util';
     template: `
     <ion-content color="dark">
           <ion-item color="warning" lines="none" detail="false">
-              <ion-title class="font-label">Assessment</ion-title>
+              <ion-title>Assessment</ion-title>
               <ion-button (click)="cancel()" fill="clear" color="light" slot="end">
                   <h2><ion-icon name="close" slot="end"></ion-icon></h2>
               </ion-button>

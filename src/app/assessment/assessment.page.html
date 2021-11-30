@@ -101,11 +101,13 @@
               </div>
             </div>
 
-            <div *ngIf="(assessService.currentMonthAssessments.length !== 0)">
+            <!-- <div *ngIf="(assessService.currentMonthAssessments.length !== 0)">
               <ion-item color="dark" lines="none">
-                <ion-label class="font-months">{{ currentMonth }}</ion-label>
+                <ion-chip color="primary">
+                  <ion-label>{{ currentMonth }}</ion-label>
+                </ion-chip>
               </ion-item>
-            </div>
+            </div> -->
 
             <ion-card color="dark" *ngIf="thisWeek.length !== 0">
               <ion-item color="dark" lines="none" detail="true" (click)="showAssessments(weekAssessments[1].id)" [detailIcon]="weekAssessments[1].showAssessments.icon">
@@ -331,11 +333,11 @@
               </div>
             </div>
 
-            <div *ngIf="(assessService.monthAssessments.length !== 0)">
+            <!-- <div *ngIf="(assessService.monthAssessments.length !== 0)">
               <ion-item color="dark" lines="none">
                 <ion-label class="font-months">Months</ion-label>
               </ion-item>
-            </div>
+            </div> -->
 
             <div *ngFor="let month of assessService.monthAssessments">
               <ion-card color="dark">
